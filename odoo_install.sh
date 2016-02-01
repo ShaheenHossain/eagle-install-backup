@@ -106,9 +106,25 @@ sudo chown $OE_USER:$OE_USER /var/log/$OE_USER
 echo -e "\n==== Installing ODOO Server ===="
 sudo git clone --depth 1 --branch $OE_VERSION https://www.github.com/odoo/odoo $OE_HOME_EXT/
 
-echo -e "\n---- Create custom module directory ----"
-sudo su $OE_USER -c "mkdir $OE_HOME/custom"
-sudo su $OE_USER -c "mkdir $OE_HOME/custom/addons"
+if [ $OE_VERSION = "9.0 Enterprise" ]; then
+    # Odoo Enterprise install!
+	echo -e "\n--- Create symlink for node"
+    sudo ln -s /usr/bin/nodejs /usr/bin/node
+	sudo su $OE_USER -c "mkdir $OE_HOME/enterprise"
+    sudo su $OE_USER -c "mkdir $OE_HOME/enterprise/addons"
+	
+    echo -e "\n---- Adding Enterprise code under $OE_HOME/enterprise/addons ----"
+    sudo git clone --depth 1 --branch 9.0 https://www.github.com/odoo/enterprise "$OE_HOME/enterprise/addons"
+
+    echo -e "\n---- Installing Enterprise specific libraries ----"
+    sudo apt-get install nodejs npm
+    sudo npm install -g less
+    sudo npm install -g less-plugin-clean-css
+else 
+    echo -e "\n---- Create custom module directory ----"
+    sudo su $OE_USER -c "mkdir $OE_HOME/custom"
+    sudo su $OE_USER -c "mkdir $OE_HOME/custom/addons" 
+fi	
 
 echo -e "\n---- Setting permissions on home folder ----"
 sudo chown -R $OE_USER:$OE_USER $OE_HOME/*
@@ -122,8 +138,12 @@ echo -e "* Change server config file"
 sudo sed -i s/"db_user = .*"/"db_user = $OE_USER"/g /etc/${OE_CONFIG}.conf
 sudo sed -i s/"; admin_passwd.*"/"admin_passwd = $OE_SUPERADMIN"/g /etc/${OE_CONFIG}.conf
 sudo su root -c "echo 'logfile = /var/log/$OE_USER/$OE_CONFIG$1.log' >> /etc/${OE_CONFIG}.conf"
-sudo su root -c "echo 'addons_path=$OE_HOME_EXT/addons,$OE_HOME/custom/addons' >> /etc/${OE_CONFIG}.conf"
-
+if [ $OE_VERSION = "9.0 Enterprise" ]; then
+    sudo su root -c "echo 'addons_path=$OE_HOME/enterprise/addons,$OE_HOME_EXT/addons' >> /etc/${OE_CONFIG}.conf"
+else
+    sudo su root -c "echo 'addons_path=$OE_HOME_EXT/addons,$OE_HOME/custom/addons' >> /etc/${OE_CONFIG}.conf"
+fi
+	
 echo -e "* Create startup file"
 sudo su root -c "echo '#!/bin/sh' >> $OE_HOME_EXT/start.sh"
 sudo su root -c "echo 'sudo -u $OE_USER $OE_HOME_EXT/openerp-server --config=/etc/${OE_CONFIG}.conf' >> $OE_HOME_EXT/start.sh"

@@ -27,6 +27,8 @@ OE_PORT="8069"
 #Choose the Odoo version which you want to install. For example: 9.0, 8.0, 7.0 or saas-6. When using 'trunk' the master version will be installed.
 #IMPORTANT! This script contains extra libraries that are specifically needed for Odoo 9.0
 OE_VERSION="9.0"
+# Set this to True if you want to install Odoo 9 Enterprise!
+IS_ENTERPRISE="False"
 #set the superadmin password
 OE_SUPERADMIN="admin"
 OE_CONFIG="${OE_USER}-server"
@@ -106,7 +108,7 @@ sudo chown $OE_USER:$OE_USER /var/log/$OE_USER
 echo -e "\n==== Installing ODOO Server ===="
 sudo git clone --depth 1 --branch $OE_VERSION https://www.github.com/odoo/odoo $OE_HOME_EXT/
 
-if [ $OE_VERSION = "9.0 Enterprise" ]; then
+if [ $IS_ENTERPRISE = "True" ]; then
     # Odoo Enterprise install!
 	echo -e "\n--- Create symlink for node"
     sudo ln -s /usr/bin/nodejs /usr/bin/node
@@ -138,7 +140,7 @@ echo -e "* Change server config file"
 sudo sed -i s/"db_user = .*"/"db_user = $OE_USER"/g /etc/${OE_CONFIG}.conf
 sudo sed -i s/"; admin_passwd.*"/"admin_passwd = $OE_SUPERADMIN"/g /etc/${OE_CONFIG}.conf
 sudo su root -c "echo 'logfile = /var/log/$OE_USER/$OE_CONFIG$1.log' >> /etc/${OE_CONFIG}.conf"
-if [ $OE_VERSION = "9.0 Enterprise" ]; then
+if [  $IS_ENTERPRISE = "True" ]; then
     sudo su root -c "echo 'addons_path=$OE_HOME/enterprise/addons,$OE_HOME_EXT/addons' >> /etc/${OE_CONFIG}.conf"
 else
     sudo su root -c "echo 'addons_path=$OE_HOME_EXT/addons,$OE_HOME/custom/addons' >> /etc/${OE_CONFIG}.conf"
@@ -171,16 +173,12 @@ PATH=/bin:/sbin:/usr/bin
 DAEMON=$OE_HOME_EXT/openerp-server
 NAME=$OE_CONFIG
 DESC=$OE_CONFIG
-
 # Specify the user name (Default: odoo).
 USER=$OE_USER
-
 # Specify an alternate config file (Default: /etc/openerp-server.conf).
 CONFIGFILE="/etc/${OE_CONFIG}.conf"
-
 # pidfile
 PIDFILE=/var/run/\${NAME}.pid
-
 # Additional options that are passed to the Daemon.
 DAEMON_OPTS="-c \$CONFIGFILE"
 [ -x \$DAEMON ] || exit 0
@@ -191,7 +189,6 @@ pid=\`cat \$PIDFILE\`
 [ -d /proc/\$pid ] && return 0
 return 1
 }
-
 case "\${1}" in
 start)
 echo -n "Starting \${DESC}: "
@@ -206,7 +203,6 @@ start-stop-daemon --stop --quiet --pidfile \$PIDFILE \
 --oknodo
 echo "\${NAME}."
 ;;
-
 restart|force-reload)
 echo -n "Restarting \${DESC}: "
 start-stop-daemon --stop --quiet --pidfile \$PIDFILE \
@@ -222,7 +218,6 @@ N=/etc/init.d/\$NAME
 echo "Usage: \$NAME {start|stop|restart|force-reload}" >&2
 exit 1
 ;;
-
 esac
 exit 0
 EOF

@@ -69,7 +69,7 @@ sudo apt-get install python-dateutil python-feedparser python-ldap python-libxsl
 echo -e "\n---- Install python libraries ----"
 sudo pip install gdata psycogreen
 # This is for compatibility with Ubuntu 16.04. Will work on 14.04, 15.04 and 16.04
-sudo pip -H install suds
+sudo -H pip install suds
 
 echo -e "\n--- Install other required packages"
 sudo apt-get install node-clean-css -y

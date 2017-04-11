@@ -17,7 +17,7 @@
 
 ##fixed parameters
 #odoo
-OE_USER="odoo"
+OE_USER="eagle"
 OE_HOME="/$OE_USER"
 OE_HOME_EXT="/$OE_USER/${OE_USER}-server"
 OE_ADDONS_PATH="$OE_HOME_EXT/addons,$OE_HOME/custom/addons"

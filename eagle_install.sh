@@ -106,7 +106,7 @@ sudo chown $OE_USER:$OE_USER /var/log/$OE_USER
 # Install EAGLE
 #--------------------------------------------------
 echo -e "\n==== Installing EAGLE Server ===="
-sudo git clone --depth 1 --branch $OE_VERSION https://www.github.com/odoo/odoo $OE_HOME_EXT/
+sudo git clone --depth 1 --branch $OE_VERSION https://www.github.com/rapidgrps/eagle-erp $OE_HOME_EXT/
 
 if [ $IS_ENTERPRISE = "True" ]; then
     # Odoo Enterprise install!
@@ -175,7 +175,7 @@ DAEMON=$OE_HOME_EXT/odoo-bin
 NAME=$OE_CONFIG
 DESC=$OE_CONFIG
 
-# Specify the user name (Default: odoo).
+# Specify the user name (Default: EAGLE).
 USER=$OE_USER
 
 # Specify an alternate config file (Default: /etc/openerp-server.conf).
@@ -241,7 +241,7 @@ sudo su root -c "echo 'xmlrpc_port = $OE_PORT' >> /etc/${OE_CONFIG}.conf"
 echo -e "* Start EAGLE on Startup"
 sudo update-rc.d $OE_CONFIG defaults
 
-echo -e "* Starting Odoo Service"
+echo -e "* Starting eagle Service"
 sudo su root -c "/etc/init.d/$OE_CONFIG start"
 echo "-----------------------------------------------------------"
 echo "Done! The Eagle server is up and running. Specifications:"
@@ -250,7 +250,7 @@ echo "User service: $OE_USER"
 echo "User PostgreSQL: $OE_USER"
 echo "Code location: $OE_USER"
 echo "Addons folder: $OE_USER/$OE_CONFIG/addons/"
-echo "Start Odoo service: sudo service $OE_CONFIG start"
-echo "Stop Odoo service: sudo service $OE_CONFIG stop"
-echo "Restart Odoo service: sudo service $OE_CONFIG restart"
+echo "Start eagle service: sudo service $OE_CONFIG start"
+echo "Stop eagle service: sudo service $OE_CONFIG stop"
+echo "Restart eagle service: sudo service $OE_CONFIG restart"
 echo "-----------------------------------------------------------"

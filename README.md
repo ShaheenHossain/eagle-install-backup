@@ -6,7 +6,7 @@ This script can be safely used in a multi-odoo code base server because the defa
 1. Download the script:
 ```
 sudo wget https://raw.githubusercontent.com/Yenthe666/InstallScript/10.0/
-sudo wget https://raw.githubusercontent.com/rapidgrps/eagle-erp-ecommerce/10.0/eagle_install.sh
+sudo wget https://raw.githubusercontent.com/rapidgrps/eagle-install-backup/10.0/eagle_install.sh
 
 ```
 2. Make the script executable:

@@ -17,3 +17,4 @@ sudo chmod +x eagle_install.sh
 ```
 sudo ./eagle_install.sh
 ```
+eagle/custom/addons,/eagle/custom/addons/misc-addons,/eagle/custom/addons/access-addons,/eagle/custom/addons/mail-addons,/eagle/custom/addons/backend_theme,/eagle/custom/addons/web,/eagle/custom/addons/website-addons,

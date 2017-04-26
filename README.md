@@ -6,6 +6,7 @@ This script can be safely used in a multi-odoo code base server because the defa
 1. Download the script:
 ```
 sudo wget https://raw.githubusercontent.com/Yenthe666/InstallScript/10.0/
+...
 sudo wget https://raw.githubusercontent.com/ShaheenHossain/eagle-install-backup/10.0/eagle_install.sh
 
 ```
@@ -17,4 +18,4 @@ sudo chmod +x eagle_install.sh
 ```
 sudo ./eagle_install.sh
 ```
-eagle/custom/addons,/eagle/custom/addons/misc-addons,/eagle/custom/addons/access-addons,/eagle/custom/addons/mail-addons,/eagle/custom/addons/backend_theme,/eagle/custom/addons/web,/eagle/custom/addons/website-addons,
+eagle/custom/addons,/eagle/custom/addons/misc-addons,/eagle/custom/addons/access-addons,/eagle/custom/addons/mail-addons,/eagle/custom/addons/backend_theme,/eagle/custom/addons/web,/eagle/custom/addons/website-addons,/eagle/custom/addons/theme_shoppers_shop,

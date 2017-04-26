@@ -18,4 +18,12 @@ sudo chmod +x eagle_install.sh
 ```
 sudo ./eagle_install.sh
 ```
+
+git clone https://github.com/it-projects-llc/misc-addons.git		
+git clone https://github.com/it-projects-llc/access-addons.git		
+git clone https://github.com/it-projects-llc/mail-addons.git		
+git clone https://github.com/Openworx/backend_theme.git		
+git clone https://github.com/OCA/web.git		
+git clone https://github.com/it-projects-llc/website-addons.git		
+
 eagle/custom/addons,/eagle/custom/addons/misc-addons,/eagle/custom/addons/access-addons,/eagle/custom/addons/mail-addons,/eagle/custom/addons/backend_theme,/eagle/custom/addons/web,/eagle/custom/addons/website-addons,/eagle/custom/addons/theme_shoppers_shop,

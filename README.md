@@ -27,3 +27,9 @@ git clone https://github.com/OCA/web.git
 git clone https://github.com/it-projects-llc/website-addons.git		
 
 eagle/custom/addons,/eagle/custom/addons/misc-addons,/eagle/custom/addons/access-addons,/eagle/custom/addons/mail-addons,/eagle/custom/addons/backend_theme,/eagle/custom/addons/web,/eagle/custom/addons/website-addons,/eagle/custom/addons/theme_shoppers_shop,
+
+
+sudo apt-get dist-upgrade 
+letsencrypt certonly
+
+https://www.youtube.com/watch?v=r8uownYJ7cI

@@ -5,7 +5,7 @@ This script can be safely used in a multi-odoo code base server because the defa
 <h3>Installation procedure</h3>
 1. Download the script: 
 
-sudo wget https://raw.githubusercontent.com/ShaheenHossain/eagle-install-backup/10.0/eagle_test_install.sh
+sudo wget https://raw.githubusercontent.com/ShaheenHossain/eagle-install-backup/Test/eagle-test-install.sh
 
 2. Make the script executable:
 sudo chmod +x eagle_test_install.sh

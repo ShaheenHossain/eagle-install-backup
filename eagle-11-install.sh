@@ -7,11 +7,11 @@
 # in one Ubuntu because of the different xmlrpc_ports
 #-------------------------------------------------------------------------------
 # Make a new file:
-# sudo nano eagle-test-install.sh
+# sudo nano eagle-11-install.sh
 # Place this content in it and then make the file executable:
-# sudo chmod +x eagle-test-install.sh
+# sudo chmod +x eagle-11-install.sh
 # Execute the script to install Eagle ERP:
-# ./eagle-test-install.sh
+# ./eagle-11-install.sh
 ################################################################################
 
 ##fixed parameters

@@ -16,7 +16,7 @@
 
 ##fixed parameters
 #Eagle ERP
-OE_USER="eagle"
+OE_USER="eagle11"
 OE_HOME="/$OE_USER"
 OE_HOME_EXT="/$OE_USER/${OE_USER}-server"
 #The default port where this Eagle ERP instance will run under (provided you use the command -c in the terminal)

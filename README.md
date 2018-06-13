@@ -6,16 +6,16 @@ This script can be safely used in a multi-odoo code base server because the defa
 1. Download the script:
 ```
 ...
-sudo wget https://raw.githubusercontent.com/ShaheenHossain/eagle-install-backup/10.1/eagle_install_10.1.sh
+sudo wget https://raw.githubusercontent.com/ShaheenHossain/eagle-install-backup/1071/eagle_install_1071.sh
 
 ```
 2. Make the script executable:
 ```
-sudo chmod +x eagle_install_10.1.sh
+sudo chmod +x eagle_install_1071.sh
 ```
 3. Execute the script:
 ```
-sudo ./eagle_install_10.1.sh
+sudo ./eagle_install_1071.sh
 ```
 
 

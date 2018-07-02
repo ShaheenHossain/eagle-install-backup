@@ -128,6 +128,8 @@ else
     sudo su $OE_USER -c "mkdir $OE_HOME/custom/addons" 
 fi
     sudo git clone --branch 10.0 https://github.com/ShaheenHossain/educat618.git $OE_HOME/custom/addons/
+    sudo git clone --branch 10.0 https://github.com/ShaheenHossain/web-pdf-preview.git $OE_HOME/custom/addons/
+
 
 echo -e "\n---- Setting permissions on home folder ----"
 sudo chown -R $OE_USER:$OE_USER $OE_HOME/*

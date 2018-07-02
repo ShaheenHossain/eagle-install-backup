@@ -16,17 +16,15 @@
  
 ##fixed parameters
 
-OE_USER="eagle1072"
+OE_USER="eagle1073"
 OE_HOME="/$OE_USER"
 OE_HOME_EXT="/$OE_USER/${OE_USER}-server"
 #Set to true if you want to install it, false if you don't need it or have it already installed.
 INSTALL_WKHTMLTOPDF="True"
-#Set the default eagle1072 port (you still have to use -c /etc/odoo-server.conf for example to use this.)
-OE_PORT="8072"
-#Choose the Odoo version which you want to install. For example: 10.0, 9.0, 8.0, 7.0 or saas-6. When using 'trunk' the master version will be installed.
+#Set the default eagle1073 port (you still have to use -c /etc/odoo-server.conf for example to use this.)
+OE_PORT="8073"
 #IMPORTANT! This script contains extra libraries that are specifically needed for Odoo 10.0
 OE_VERSION="10.0"
-# Set this to True if you want to install Odoo 10 Enterprise!
 IS_ENTERPRISE="False"
 #set the superadmin password
 OE_SUPERADMIN="admin"
@@ -56,7 +54,7 @@ sudo apt-get upgrade -y
 echo -e "\n---- Install PostgreSQL Server ----"
 sudo apt-get install postgresql -y
 
-echo -e "\n---- Creating the EAGLE1072 PostgreSQL User  ----"
+echo -e "\n---- Creating the EAGLE1073 PostgreSQL User  ----"
 sudo su - postgres -c "createuser -s $OE_USER" 2> /dev/null || true
 
 #--------------------------------------------------
@@ -80,7 +78,7 @@ sudo apt-get install python-gevent -y
 # Install Wkhtmltopdf if needed
 #--------------------------------------------------
 if [ $INSTALL_WKHTMLTOPDF = "True" ]; then
-  echo -e "\n---- Install wkhtml and place shortcuts on correct place for EAGLE1072 ----"
+  echo -e "\n---- Install wkhtml and place shortcuts on correct place for EAGLE1073 ----"
   #pick up correct one from x64 & x32 versions:
   if [ "`getconf LONG_BIT`" == "64" ];then
       _url=$WKHTMLTOX_X64
@@ -95,8 +93,8 @@ else
   echo "Wkhtmltopdf isn't installed due to the choice of the user!"
 fi
 	
-echo -e "\n---- Create EAGLE1072 system user ----"
-sudo adduser --system --quiet --shell=/bin/bash --home=$OE_HOME --gecos 'EAGLE1072' --group $OE_USER
+echo -e "\n---- Create EAGLE1073 system user ----"
+sudo adduser --system --quiet --shell=/bin/bash --home=$OE_HOME --gecos 'EAGLE1073' --group $OE_USER
 #The user should also be added to the sudo'ers group.
 sudo adduser $OE_USER sudo
 
@@ -127,8 +125,9 @@ if [ $IS_ENTERPRISE = "True" ]; then
 else
     echo -e "\n---- Create custom module directory ----"
     sudo su $OE_USER -c "mkdir $OE_HOME/custom"
-    sudo su $OE_USER -c "mkdir $OE_HOME/custom/addons"
+    sudo su $OE_USER -c "mkdir $OE_HOME/custom/addons" 
 fi
+    sudo git clone --branch 10.0 https://github.com/ShaheenHossain/educat618.git $OE_HOME/custom/addons/
 
 echo -e "\n---- Setting permissions on home folder ----"
 sudo chown -R $OE_USER:$OE_USER $OE_HOME/*

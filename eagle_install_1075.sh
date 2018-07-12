@@ -16,12 +16,12 @@
  
 ##fixed parameters
 
-OE_USER="eagle1074"
+OE_USER="eagle1075"
 OE_HOME="/$OE_USER"
 OE_HOME_EXT="/$OE_USER/${OE_USER}-server"
 #Set to true if you want to install it, false if you don't need it or have it already installed.
 INSTALL_WKHTMLTOPDF="True"
-#Set the default eagle1074 port (you still have to use -c /etc/odoo-server.conf for example to use this.)
+#Set the default eagle1075 port (you still have to use -c /etc/odoo-server.conf for example to use this.)
 OE_PORT="8074"
 #IMPORTANT! This script contains extra libraries that are specifically needed for Odoo 10.0
 OE_VERSION="10.0"
@@ -54,7 +54,7 @@ sudo apt-get upgrade -y
 echo -e "\n---- Install PostgreSQL Server ----"
 sudo apt-get install postgresql -y
 
-echo -e "\n---- Creating the EAGLE1074 PostgreSQL User  ----"
+echo -e "\n---- Creating the EAGLE1075 PostgreSQL User  ----"
 sudo su - postgres -c "createuser -s $OE_USER" 2> /dev/null || true
 
 #--------------------------------------------------
@@ -78,7 +78,7 @@ sudo apt-get install python-gevent -y
 # Install Wkhtmltopdf if needed
 #--------------------------------------------------
 if [ $INSTALL_WKHTMLTOPDF = "True" ]; then
-  echo -e "\n---- Install wkhtml and place shortcuts on correct place for EAGLE1074 ----"
+  echo -e "\n---- Install wkhtml and place shortcuts on correct place for EAGLE1075 ----"
   #pick up correct one from x64 & x32 versions:
   if [ "`getconf LONG_BIT`" == "64" ];then
       _url=$WKHTMLTOX_X64
@@ -93,8 +93,8 @@ else
   echo "Wkhtmltopdf isn't installed due to the choice of the user!"
 fi
 	
-echo -e "\n---- Create EAGLE1074 system user ----"
-sudo adduser --system --quiet --shell=/bin/bash --home=$OE_HOME --gecos 'EAGLE1074' --group $OE_USER
+echo -e "\n---- Create EAGLE1075 system user ----"
+sudo adduser --system --quiet --shell=/bin/bash --home=$OE_HOME --gecos 'EAGLE1075' --group $OE_USER
 #The user should also be added to the sudo'ers group.
 sudo adduser $OE_USER sudo
 

@@ -22,7 +22,7 @@ OE_HOME_EXT="/$OE_USER/${OE_USER}-server"
 #Set to true if you want to install it, false if you don't need it or have it already installed.
 INSTALL_WKHTMLTOPDF="True"
 #Set the default eagle1076 port (you still have to use -c /etc/odoo-server.conf for example to use this.)
-OE_PORT="8075"
+OE_PORT="8076"
 #IMPORTANT! This script contains extra libraries that are specifically needed for Odoo 10.0
 OE_VERSION="10.0"
 IS_ENTERPRISE="False"

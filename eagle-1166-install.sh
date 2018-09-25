@@ -16,14 +16,14 @@
 
 ##fixed parameters
 #Eagle ERP
-OE_USER="eagle1166"
+OE_USER="eagle1165"
 OE_HOME="/$OE_USER"
 OE_HOME_EXT="/$OE_USER/${OE_USER}-server"
 #The default port where this Eagle ERP instance will run under (provided you use the command -c in the terminal)
 #Set to true if you want to install it, false if you don't need it or have it already installed.
 INSTALL_WKHTMLTOPDF="True"
 #Set the default Eagle port (you still have to use -c /etc/odoo-server.conf for example to use this.)
-OE_PORT="8066"
+OE_PORT="8065"
 #Choose the Eagle ERP version which you want to install. For example: 11.0, 10.0, 9.0 or saas-18. When using 'master' the master version will be installed.
 #IMPORTANT! This script contains extra libraries that are specifically needed for khanstore/eagle-exe
 OE_VERSION="11.0"
@@ -86,7 +86,7 @@ sudo apt-get install python-gevent -y
 # Install Wkhtmltopdf if needed
 #--------------------------------------------------
 if [ $INSTALL_WKHTMLTOPDF = "True" ]; then
-  echo -e "\n---- Install wkhtml and place shortcuts on correct place for Eagle 1166 ----"
+  echo -e "\n---- Install wkhtml and place shortcuts on correct place for Eagle 1165 ----"
   #pick up correct one from x64 & x32 versions:
   if [ "`getconf LONG_BIT`" == "64" ];then
       _url=$WKHTMLTOX_X64
@@ -102,7 +102,7 @@ else
 fi
 
 echo -e "\n---- Create Eagle ERP system user ----"
-sudo adduser --system --quiet --shell=/bin/bash --home=$OE_HOME --gecos 'EAGLE1166' --group $OE_USER
+sudo adduser --system --quiet --shell=/bin/bash --home=$OE_HOME --gecos 'EAGLE1165' --group $OE_USER
 #The user should also be added to the sudo'ers group.
 sudo adduser $OE_USER sudo
 

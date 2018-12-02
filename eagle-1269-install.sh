@@ -1,35 +1,33 @@
 #!/bin/bash
 ################################################################################
-# Script for installing Eagle ERP on Ubuntu 14.04, 15.04, 16.04 and 18.04 (could be used for other version too)
-# Author: Md. Shaheen Hossain
+# Script for installing Odoo on Ubuntu 14.04, 15.04, 16.04 and 18.04 (could be used for other version too)
+# Author: Yenthe Van Ginneken
 #-------------------------------------------------------------------------------
-# This script will install Eagle ERP v11 on your Ubuntu 16.04 server. It can install multiple Eagle instances
+# This script will install Odoo on your Ubuntu 16.04 server. It can install multiple Odoo instances
 # in one Ubuntu because of the different xmlrpc_ports
 #-------------------------------------------------------------------------------
 # Make a new file:
-# sudo nano eagle-11-install.sh
+# sudo nano odoo-install.sh
 # Place this content in it and then make the file executable:
-# sudo chmod +x eagle-11-install.sh
-# Execute the script to install Eagle ERP:
-# ./eagle-11-install.sh
+# sudo chmod +x odoo-install.sh
+# Execute the script to install Odoo:
+# ./odoo-install
 ################################################################################
 
-##fixed parameters
-#Eagle ERP
-OE_USER="eagle1169"
+OE_USER="eagle1269"
 OE_HOME="/$OE_USER"
 OE_HOME_EXT="/$OE_USER/${OE_USER}-server"
-#The default port where this Eagle ERP instance will run under (provided you use the command -c in the terminal)
-#Set to true if you want to install it, false if you don't need it or have it already installed.
+# The default port where this Odoo instance will run under (provided you use the command -c in the terminal)
+# Set to true if you want to install it, false if you don't need it or have it already installed.
 INSTALL_WKHTMLTOPDF="True"
-#Set the default Eagle port (you still have to use -c /etc/odoo-server.conf for example to use this.)
+# Set the default Odoo port (you still have to use -c /etc/odoo-server.conf for example to use this.)
 OE_PORT="8069"
-#Choose the Eagle ERP version which you want to install. For example: 11.0, 10.0, 9.0 or saas-18. When using 'master' the master version will be installed.
-#IMPORTANT! This script contains extra libraries that are specifically needed for khanstore/eagle-exe
-OE_VERSION="11.0"
-# Set this to True if you want to install Eagle ERP 11 Enterprise!
+# Choose the Odoo version which you want to install. For example: 12.0, 11.0, 10.0 or saas-18. When using 'master' the master version will be installed.
+# IMPORTANT! This script contains extra libraries that are specifically needed for Odoo 12.0
+OE_VERSION="12.0"
+# Set this to True if you want to install the Odoo enterprise version!
 IS_ENTERPRISE="False"
-#set the superadmin password
+# set the superadmin password
 OE_SUPERADMIN="admin"
 OE_CONFIG="${OE_USER}-server"
 
@@ -37,10 +35,7 @@ OE_CONFIG="${OE_USER}-server"
 ###  WKHTMLTOPDF download links
 ## === Ubuntu Trusty x64 & x32 === (for other distributions please replace these two links,
 ## in order to have correct version of wkhtmltox installed, for a danger note refer to 
-## https://www.eagle-erp.com ):
-
-#WKHTMLTOX_X64=https://builds.wkhtmltopdf.org/0.12.1.3/wkhtmltox_0.12.1.3-1~bionic_amd64.deb
-
+## https://www.odoo.com/documentation/8.0/setup/install.html#deb ):
 WKHTMLTOX_X64=https://downloads.wkhtmltopdf.org/0.12/0.12.1/wkhtmltox-0.12.1_linux-trusty-amd64.deb
 WKHTMLTOX_X32=https://downloads.wkhtmltopdf.org/0.12/0.12.1/wkhtmltox-0.12.1_linux-trusty-i386.deb
 
@@ -48,6 +43,8 @@ WKHTMLTOX_X32=https://downloads.wkhtmltopdf.org/0.12/0.12.1/wkhtmltox-0.12.1_lin
 # Update Server
 #--------------------------------------------------
 echo -e "\n---- Update Server ----"
+# universe package is for Ubuntu 18.x
+sudo add-apt-repository universe
 sudo apt-get update
 sudo apt-get upgrade -y
 
@@ -57,22 +54,23 @@ sudo apt-get upgrade -y
 echo -e "\n---- Install PostgreSQL Server ----"
 sudo apt-get install postgresql -y
 
-echo -e "\n---- Creating the Eagle PostgreSQL User  ----"
+echo -e "\n---- Creating the Eagle12 PostgreSQL User  ----"
 sudo su - postgres -c "createuser -s $OE_USER" 2> /dev/null || true
 
 #--------------------------------------------------
 # Install Dependencies
 #--------------------------------------------------
 echo -e "\n--- Installing Python 3 + pip3 --"
-sudo apt-get install python3 python3-pip
+sudo apt-get install python3 python3-pip -y
 
 echo -e "\n---- Install tool packages ----"
 sudo apt-get install wget git bzr python-pip gdebi-core -y
 
 echo -e "\n---- Install python packages ----"
+sudo apt-get install libxml2-dev libxslt1-dev zlib1g-dev -y
+sudo apt-get install libsasl2-dev libldap2-dev libssl-dev -y
 sudo apt-get install python-pypdf2 python-dateutil python-feedparser python-ldap python-libxslt1 python-lxml python-mako python-openid python-psycopg2 python-pybabel python-pychart python-pydot python-pyparsing python-reportlab python-simplejson python-tz python-vatnumber python-vobject python-webdav python-werkzeug python-xlwt python-yaml python-zsi python-docutils python-psutil python-mock python-unittest2 python-jinja2 python-pypdf python-decorator python-requests python-passlib python-pil -y
-sudo pip3 install pypdf2 Babel passlib Werkzeug decorator python-dateutil pyyaml psycopg2 psutil html2text docutils lxml pillow reportlab ninja2 requests gdata XlsxWriter vobject python-openid pyparsing pydot mock mako Jinja2 ebaysdk feedparser xlwt psycogreen suds-jurko pytz pyusb greenlet xlrd 
-sudo apt-get install python3-pandas
+sudo pip3 install pypdf2 Babel passlib Werkzeug decorator python-dateutil pyyaml psycopg2 psutil html2text docutils lxml pillow reportlab ninja2 requests gdata XlsxWriter vobject python-openid pyparsing pydot mock mako Jinja2 ebaysdk feedparser xlwt psycogreen suds-jurko pytz pyusb greenlet xlrd chardet libsass
 
 echo -e "\n---- Install python libraries ----"
 # This is for compatibility with Ubuntu 16.04. Will work on 14.04, 15.04 and 16.04
@@ -87,7 +85,7 @@ sudo apt-get install python-gevent -y
 # Install Wkhtmltopdf if needed
 #--------------------------------------------------
 if [ $INSTALL_WKHTMLTOPDF = "True" ]; then
-  echo -e "\n---- Install wkhtml and place shortcuts on correct place for Eagle 1169 ----"
+  echo -e "\n---- Install wkhtml and place shortcuts on correct place for Eagle 12 ----"
   #pick up correct one from x64 & x32 versions:
   if [ "`getconf LONG_BIT`" == "64" ];then
       _url=$WKHTMLTOX_X64
@@ -102,8 +100,8 @@ else
   echo "Wkhtmltopdf isn't installed due to the choice of the user!"
 fi
 
-echo -e "\n---- Create Eagle ERP system user ----"
-sudo adduser --system --quiet --shell=/bin/bash --home=$OE_HOME --gecos 'EAGLE1169' --group $OE_USER
+echo -e "\n---- Create Eagle system user ----"
+sudo adduser --system --quiet --shell=/bin/bash --home=$OE_HOME --gecos 'eagle12' --group $OE_USER
 #The user should also be added to the sudo'ers group.
 sudo adduser $OE_USER sudo
 
@@ -112,12 +110,12 @@ sudo mkdir /var/log/$OE_USER
 sudo chown $OE_USER:$OE_USER /var/log/$OE_USER
 
 #--------------------------------------------------
-# Install Eagle ERP
+# Install ODOO
 #--------------------------------------------------
-echo -e "\n==== Installing Eagle ERP Server ===="
-sudo git clone --depth 1 --branch $OE_VERSION https://github.com/ShaheenHossain/eagle11 $OE_HOME_EXT/
+echo -e "\n==== Installing Eagle12 Server ===="
+sudo git clone --depth 1 --branch $OE_VERSION https://www.github.com/odoo/odoo $OE_HOME_EXT/
 
- if [ $IS_ENTERPRISE = "True" ]; then
+if [ $IS_ENTERPRISE = "True" ]; then
     # Odoo Enterprise install!
     echo -e "\n--- Create symlink for node"
     sudo ln -s /usr/bin/nodejs /usr/bin/node
@@ -128,7 +126,7 @@ sudo git clone --depth 1 --branch $OE_VERSION https://github.com/ShaheenHossain/
     while [[ $GITHUB_RESPONSE == *"Authentication"* ]]; do
         echo "------------------------WARNING------------------------------"
         echo "Your authentication with Github has failed! Please try again."
-        printf "In order to clone and install the Odoo enterprise version you \nneed to be an offical Odoo partner and you need access to\nhttp://github.com/odoo/enterprise.\n"
+        printf "In order to clone and install the Eagle 12 enterprise version you \nneed to be an offical Eagle12 partner and you need access to\nhttp://github.com/odoo/enterprise.\n"
         echo "TIP: Press ctrl+c to stop this script."
         echo "-------------------------------------------------------------"
         echo " "
@@ -172,7 +170,7 @@ sudo su root -c "echo 'sudo -u $OE_USER $OE_HOME_EXT/openerp-server --config=/et
 sudo chmod 755 $OE_HOME_EXT/start.sh
 
 #--------------------------------------------------
-# Adding Eagle ERP as a deamon (initscript)
+# Adding ODOO as a deamon (initscript)
 #--------------------------------------------------
 
 echo -e "* Create init file"
@@ -247,19 +245,19 @@ sudo mv ~/$OE_CONFIG /etc/init.d/$OE_CONFIG
 sudo chmod 755 /etc/init.d/$OE_CONFIG
 sudo chown root: /etc/init.d/$OE_CONFIG
 
-echo -e "* Start Eagle ERP on Startup"
+echo -e "* Start Eagle 12 on Startup"
 sudo update-rc.d $OE_CONFIG defaults
 
-echo -e "* Starting Eagle Service"
+echo -e "* Starting Eagle 12 Service"
 sudo su root -c "/etc/init.d/$OE_CONFIG start"
 echo "-----------------------------------------------------------"
-echo "Done! The Eagle server is up and running. Specifications:"
+echo "Done! The Eagle 12 server is up and running. Specifications:"
 echo "Port: $OE_PORT"
 echo "User service: $OE_USER"
 echo "User PostgreSQL: $OE_USER"
 echo "Code location: $OE_USER"
 echo "Addons folder: $OE_USER/$OE_CONFIG/addons/"
-echo "Start Eagle service: sudo service $OE_CONFIG start"
-echo "Stop Eagle service: sudo service $OE_CONFIG stop"
-echo "Restart Eagle service: sudo service $OE_CONFIG restart"
+echo "Start Eagle 12 service: sudo service $OE_CONFIG start"
+echo "Stop Eagle 12 service: sudo service $OE_CONFIG stop"
+echo "Restart Eagle 12 service: sudo service $OE_CONFIG restart"
 echo "-----------------------------------------------------------"

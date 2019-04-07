@@ -3,7 +3,7 @@ but goes a bit further. This script will also give you the ability to define an 
 This script can be safely used in a multi-odoo code base server because the default Odoo port is changed BEFORE the Odoo is started.
 
 
-<h2>Dependency Pandas </h2>
+<h2>Dependency Pandas 8051 not working </h2>
 
 <h3>Installation procedure 11</h3>
 

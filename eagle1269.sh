@@ -1,10 +1,10 @@
 #!/bin/bash
 
-OE_USER="eagle1269"
+OE_USER="eagle1268"
 DIR_PATH=$(pwd)
 VCODE=12
 VERSION=master
-PORT=8069
+PORT=8068
 DEPTH=1
 PATHBASE=/opt/$OE_USER
 PATH_LOG=/opt/$OE_USER/log
@@ -14,7 +14,7 @@ PATHREPOS_OCA=/opt/$OE_USER/extra-addons/oca
 wk64="https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.$(lsb_release -cs)_amd64.deb"
 wk32="https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.$(lsb_release -cs)_i386.deb"
 
-sudo adduser --system --quiet --shell=/bin/bash --home=$PATHBASE --gecos 'EAGLE1269' --group $OE_USER
+sudo adduser --system --quiet --shell=/bin/bash --home=$PATHBASE --gecos 'EAGLE1268' --group $OE_USER
 sudo adduser $OE_USER sudo
 
 # add universe repository & update (Fix error download libraries)

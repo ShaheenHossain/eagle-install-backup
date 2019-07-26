@@ -18,6 +18,8 @@ sudo chmod +x eagle-1269-install.sh
 sudo ./eagle-1269-install.sh
 
 
+
+Not use
 sudo wget https://raw.githubusercontent.com/ShaheenHossain/eagle-install-backup/1269/eagle1269.sh
 
 2. Make the script executable:

@@ -15,4 +15,10 @@ sudo chmod +x eagle-1268-install.sh
 
 3. Execute the script:
 sudo ./eagle-1268-install.sh
+
+
+
+sudo /etc/init.d/eagle1268-server stop
+
+
 ```

@@ -18,7 +18,7 @@ sudo ./eagle-1266-install.sh
 
 
 
-sudo /etc/init.d/eagle1267-server stop
+sudo /etc/init.d/eagle1266-server stop
 
 
 ```

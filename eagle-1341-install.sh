@@ -1,4 +1,5 @@
 #!/bin/bash
+
 OE_USER="eagle1341"
 OE_HOME="/$OE_USER"
 OE_HOME_EXT="/$OE_USER/${OE_USER}-server"
@@ -9,8 +10,8 @@ IS_ENTERPRISE="False"
 OE_SUPERADMIN="admin"
 OE_CONFIG="${OE_USER}-server"
 
-WKHTMLTOX_X64="https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.$(lsb_release -cs)_amd64.deb"
-WKHTMLTOX_X32="https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.$(lsb_release -cs)_i386.deb"
+WKHTMLTOX_X64=https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.trusty_amd64.deb
+WKHTMLTOX_X32=https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.trusty_i386.deb
 
 #--------------------------------------------------
 # Update Server
@@ -18,6 +19,8 @@ WKHTMLTOX_X32="https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12
 echo -e "\n---- Update Server ----"
 # universe package is for Ubuntu 18.x
 sudo add-apt-repository universe
+# libpng12-0 dependency for wkhtmltopdf
+sudo add-apt-repository "deb http://mirrors.kernel.org/ubuntu/ xenial main"
 sudo apt-get update
 sudo apt-get upgrade -y
 
@@ -25,39 +28,29 @@ sudo apt-get upgrade -y
 # Install PostgreSQL Server
 #--------------------------------------------------
 echo -e "\n---- Install PostgreSQL Server ----"
-sudo apt-get install postgresql -y
+sudo apt-get install postgresql postgresql-server-dev-all -y
 
-echo -e "\n---- Creating the Eagle12 PostgreSQL User  ----"
+echo -e "\n---- Creating the Eagle PostgreSQL User  ----"
 sudo su - postgres -c "createuser -s $OE_USER" 2> /dev/null || true
 
 #--------------------------------------------------
 # Install Dependencies
 #--------------------------------------------------
 echo -e "\n--- Installing Python 3 + pip3 --"
-sudo apt-get install python3 python3-pip -y
+sudo apt-get install git python3 python3-pip build-essential wget python3-dev python3-venv python3-wheel libxslt-dev libzip-dev libldap2-dev libsasl2-dev python3-setuptools node-less libpng12-0 gdebi -y
 
-echo -e "\n---- Install tool packages ----"
-sudo apt-get install wget git bzr python-pip gdebi-core libpcap-dev libpq-dev -y
+echo -e "\n---- Install python packages/requirements ----"
+sudo pip3 install -r https://github.com/ShaheenHossain/eagle13/raw/${OE_VERSION}/requirements.txt
 
-echo -e "\n---- Install python packages ----"
-sudo apt-get install libxml2-dev libxslt1-dev zlib1g-dev -y
-sudo apt-get install libsasl2-dev libldap2-dev libssl-dev -y
-sudo apt-get install python-pypdf2 python-dateutil python-feedparser python-ldap python-libxslt1 python-lxml python-mako python-openid python-psycopg2 python-pybabel python-pychart python-pydot python-pyparsing python-reportlab python-simplejson python-tz python-vatnumber python-vobject python-webdav python-werkzeug python-xlwt python-yaml python-zsi python-docutils python-psutil python-mock python-unittest2 python-jinja2 python-pypdf python-decorator python-requests python-passlib python-pil -y
-sudo pip3 install pypdf2 Babel passlib Werkzeug decorator python-dateutil pyyaml psycopg2 psutil html2text docutils lxml pillow reportlab ninja2 requests gdata XlsxWriter vobject python-openid pyparsing pydot mock mako Jinja2 ebaysdk feedparser xlwt psycogreen suds-jurko pytz pyusb greenlet xlrd chardet libsass
-
-echo -e "\n---- Install python libraries ----"
-sudo apt-get install python3-suds
-
-echo -e "\n--- Install other required packages"
-sudo apt-get install node-clean-css -y
-sudo apt-get install node-less -y
-sudo apt-get install python-gevent -y
+echo -e "\n---- Installing nodeJS NPM and rtlcss for LTR support ----"
+sudo apt-get install nodejs npm -y
+sudo npm install -g rtlcss
 
 #--------------------------------------------------
 # Install Wkhtmltopdf if needed
 #--------------------------------------------------
 if [ $INSTALL_WKHTMLTOPDF = "True" ]; then
-  echo -e "\n---- Install wkhtml and place shortcuts on correct place for Eagle 13 ----"
+  echo -e "\n---- Install wkhtml and place shortcuts on correct place for EAGLE 13 ----"
   #pick up correct one from x64 & x32 versions:
   if [ "`getconf LONG_BIT`" == "64" ];then
       _url=$WKHTMLTOX_X64
@@ -74,6 +67,7 @@ fi
 
 echo -e "\n---- Create Eagle system user ----"
 sudo adduser --system --quiet --shell=/bin/bash --home=$OE_HOME --gecos 'EAGLE1341' --group $OE_USER
+#The user should also be added to the sudo'ers group.
 sudo adduser $OE_USER sudo
 
 echo -e "\n---- Create Log directory ----"
@@ -81,13 +75,13 @@ sudo mkdir /var/log/$OE_USER
 sudo chown $OE_USER:$OE_USER /var/log/$OE_USER
 
 #--------------------------------------------------
-# Install Eagle
+# Install EAGLE
 #--------------------------------------------------
-echo -e "\n==== Installing Eagle13 Server ===="
+echo -e "\n==== Installing EAGLE Server ===="
 sudo git clone --depth 1 --branch $OE_VERSION https://github.com/ShaheenHossain/eagle13 $OE_HOME_EXT/
 
 if [ $IS_ENTERPRISE = "True" ]; then
-    # Eagle Enterprise install!
+    # Odoo Enterprise install!
     echo -e "\n--- Create symlink for node"
     sudo ln -s /usr/bin/nodejs /usr/bin/node
     sudo su $OE_USER -c "mkdir $OE_HOME/enterprise"
@@ -97,7 +91,7 @@ if [ $IS_ENTERPRISE = "True" ]; then
     while [[ $GITHUB_RESPONSE == *"Authentication"* ]]; do
         echo "------------------------WARNING------------------------------"
         echo "Your authentication with Github has failed! Please try again."
-        printf "In order to clone and install the Eagle 12 enterprise version you \nneed to be an offical Eagle12 partner and you need access to\nhttp://github.com/odoo/enterprise.\n"
+        printf "In order to clone and install the EAGLE enterprise version you \nneed to be an offical EAGLE partner and you need access to\nhttp://github.com/odoo/enterprise.\n"
         echo "TIP: Press ctrl+c to stop this script."
         echo "-------------------------------------------------------------"
         echo " "
@@ -106,8 +100,7 @@ if [ $IS_ENTERPRISE = "True" ]; then
 
     echo -e "\n---- Added Enterprise code under $OE_HOME/enterprise/addons ----"
     echo -e "\n---- Installing Enterprise specific libraries ----"
-    sudo pip3 install num2words ofxparse
-    sudo apt-get install nodejs npm
+    sudo pip3 install num2words ofxparse dbfread ebaysdk firebase_admin pyOpenSSL
     sudo npm install -g less
     sudo npm install -g less-plugin-clean-css
 fi
@@ -137,7 +130,7 @@ sudo chmod 640 /etc/${OE_CONFIG}.conf
 
 echo -e "* Create startup file"
 sudo su root -c "echo '#!/bin/sh' >> $OE_HOME_EXT/start.sh"
-sudo su root -c "echo 'sudo -u $OE_USER $OE_HOME_EXT/openerp-server --config=/etc/${OE_CONFIG}.conf' >> $OE_HOME_EXT/start.sh"
+sudo su root -c "echo 'sudo -u $OE_USER $OE_HOME_EXT/eagle-bin --config=/etc/${OE_CONFIG}.conf' >> $OE_HOME_EXT/start.sh"
 sudo chmod 755 $OE_HOME_EXT/start.sh
 
 #--------------------------------------------------
@@ -146,6 +139,7 @@ sudo chmod 755 $OE_HOME_EXT/start.sh
 
 echo -e "* Create init file"
 cat <<EOF > ~/$OE_CONFIG
+#!/bin/sh
 PATH=/bin:/sbin:/usr/bin
 DAEMON=$OE_HOME_EXT/eagle-bin
 NAME=$OE_CONFIG
@@ -200,19 +194,19 @@ sudo mv ~/$OE_CONFIG /etc/init.d/$OE_CONFIG
 sudo chmod 755 /etc/init.d/$OE_CONFIG
 sudo chown root: /etc/init.d/$OE_CONFIG
 
-echo -e "* Start Eagle 12 on Startup"
+echo -e "* Start Eagle ERP on Startup"
 sudo update-rc.d $OE_CONFIG defaults
 
-echo -e "* Starting Eagle 12 Service"
+echo -e "* Starting Eagle ERP Service"
 sudo su root -c "/etc/init.d/$OE_CONFIG start"
 echo "-----------------------------------------------------------"
-echo "Done! The Eagle 12 server is up and running. Specifications:"
+echo "Done! The Eagle ERP server is up and running. Specifications:"
 echo "Port: $OE_PORT"
 echo "User service: $OE_USER"
 echo "User PostgreSQL: $OE_USER"
 echo "Code location: $OE_USER"
 echo "Addons folder: $OE_USER/$OE_CONFIG/addons/"
-echo "Start Eagle 12 service: sudo service $OE_CONFIG start"
-echo "Stop Eagle 12 service: sudo service $OE_CONFIG stop"
-echo "Restart Eagle 12 service: sudo service $OE_CONFIG restart"
+echo "Start Eagle ERP service: sudo service $OE_CONFIG start"
+echo "Stop Eagle ERP service: sudo service $OE_CONFIG stop"
+echo "Restart Eagle ERP service: sudo service $OE_CONFIG restart"
 echo "-----------------------------------------------------------"

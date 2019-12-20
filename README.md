@@ -8,7 +8,7 @@ This script can be safely used in a multi-odoo code base server because the defa
 <h3>Installation procedure 11</h3>
 
 
-sudo wget https://raw.githubusercontent.com/ShaheenHossain/eagle-install-backup/1266/eagle-1341-install.sh
+sudo wget https://raw.githubusercontent.com/ShaheenHossain/eagle-install-backup/1341/eagle-1341-install.sh
 
 2. Make the script executable:
 sudo chmod +x eagle-1341-install.sh

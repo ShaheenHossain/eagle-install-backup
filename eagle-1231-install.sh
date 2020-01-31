@@ -2,33 +2,15 @@
 OE_USER="eagle1231"
 OE_HOME="/$OE_USER"
 OE_HOME_EXT="/$OE_USER/${OE_USER}-server"
-# The default port where this Eagle instance will run under (provided you use the command -c in the terminal)
-# Set to true if you want to install it, false if you don't need it or have it already installed.
 INSTALL_WKHTMLTOPDF="True"
-# Set the default Eagle port (you still have to use -c /etc/Eagle-server.conf for example to use this.)
 OE_PORT="8031"
-# Choose the Eagle version which you want to install. For example: 12.0, 11.0, 10.0 or saas-18. When using 'master' the master version will be installed.
-# IMPORTANT! This script contains extra libraries that are specifically needed for Eagle 12.0
 OE_VERSION="master"
-# Set this to True if you want to install the Eagle enterprise version!
 IS_ENTERPRISE="False"
-# set the superadmin password
 OE_SUPERADMIN="admin"
 OE_CONFIG="${OE_USER}-server"
 
-##
-###  WKHTMLTOPDF download links
-## === Ubuntu Trusty x64 & x32 === (for other distributions please replace these two links,
-## in order to have correct version of wkhtmltox installed, for a danger note refer to 
-## https://www.eagle-erp.com/documentation/8.0/setup/install.html#deb ):
-
-#WKHTMLTOX_X64=https://downloads.wkhtmltopdf.org/0.12/0.12.1/wkhtmltox-0.12.1_linux-trusty-amd64.deb
-#WKHTMLTOX_X32=https://downloads.wkhtmltopdf.org/0.12/0.12.1/wkhtmltox-0.12.1_linux-trusty-i386.deb
-
-
 WKHTMLTOX_X64="https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.$(lsb_release -cs)_amd64.deb"
 WKHTMLTOX_X32="https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.$(lsb_release -cs)_i386.deb"
-
 
 #--------------------------------------------------
 # Update Server
@@ -43,25 +25,37 @@ sudo apt-get upgrade -y
 # Install PostgreSQL Server
 #--------------------------------------------------
 echo -e "\n---- Install PostgreSQL Server ----"
-sudo apt-get install postgresql -y
+sudo apt-get install postgresql postgresql-server-dev-all -y
 
-echo -e "\n---- Creating the Eagle12 PostgreSQL User  ----"
+echo -e "\n---- Creating the Eagle PostgreSQL User  ----"
 sudo su - postgres -c "createuser -s $OE_USER" 2> /dev/null || true
 
-
 #--------------------------------------------------
-# Install Dependencies 31012020
+# Install Dependencies
 #--------------------------------------------------
 echo -e "\n--- Installing Python 3 + pip3 --"
-sudo apt-get install git python3 python3-pip build-essential wget python3-dev python3-venv python3-wheel libxslt-dev libzip-dev libldap2-dev libsasl2-dev python3-setuptools node-less libpng12-0 gdebi -y
+sudo apt-get install python3 python3-pip -y
+
+echo -e "\n---- Install tool packages ----"
+#sudo apt-get install wget git bzr python-pip gdebi-core -y
+sudo apt-get install wget git bzr python-pip gdebi-core libpcap-dev libpq-dev -y
+
+echo -e "\n---- Install python packages ----"
+sudo apt-get install libxml2-dev libxslt1-dev zlib1g-dev -y
+sudo apt-get install libsasl2-dev libldap2-dev libssl-dev -y
 
 echo -e "\n---- Install python packages/requirements ----"
-sudo pip3 install -r https://github.com/ShaheenHossain/eagle-12.3/raw/master/requirements.txt
+sudo pip3 install -r https://raw.githubusercontent.com/ShaheenHossain/eagle-12.1/master/requirements.txt
 
-echo -e "\n---- Installing nodeJS NPM and rtlcss for LTR support ----"
-sudo apt-get install nodejs npm -y
-sudo npm install -g rtlcss
 
+echo -e "\n---- Install python libraries ----"
+# This is for compatibility with Ubuntu 16.04. Will work on 14.04, 15.04 and 16.04
+sudo apt-get install python3-suds
+
+echo -e "\n--- Install other required packages"
+sudo apt-get install node-clean-css -y
+sudo apt-get install node-less -y
+sudo apt-get install python-gevent -y
 
 #--------------------------------------------------
 # Install Wkhtmltopdf if needed
@@ -122,6 +116,8 @@ if [ $IS_ENTERPRISE = "True" ]; then
     sudo npm install -g less
     sudo npm install -g less-plugin-clean-css
 fi
+
+
 
 echo -e "\n---- Create custom module directory ----"
 sudo su $OE_USER -c "mkdir $OE_HOME/custom"

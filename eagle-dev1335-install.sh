@@ -20,6 +20,7 @@ sudo add-apt-repository universe
 sudo apt-get update
 sudo apt-get upgrade -y
 
+
 #--------------------------------------------------
 # Install PostgreSQL Server
 #--------------------------------------------------
@@ -29,37 +30,25 @@ sudo apt-get install postgresql postgresql-server-dev-all -y
 echo -e "\n---- Creating the Eagle PostgreSQL User  ----"
 sudo su - postgres -c "createuser -s $OE_USER" 2> /dev/null || true
 
+
 #--------------------------------------------------
 # Install Dependencies
 #--------------------------------------------------
 echo -e "\n--- Installing Python 3 + pip3 --"
-sudo apt-get install python3 python3-pip -y
-
-echo -e "\n---- Install tool packages ----"
-#sudo apt-get install wget git bzr python-pip gdebi-core -y
-sudo apt-get install wget git bzr python-pip gdebi-core libpcap-dev libpq-dev -y
-
-echo -e "\n---- Install python packages ----"
-sudo apt-get install libxml2-dev libxslt1-dev zlib1g-dev -y
-sudo apt-get install libsasl2-dev libldap2-dev libssl-dev -y
+sudo apt-get install git python3 python3-pip build-essential wget python3-dev python3-venv python3-wheel libxslt-dev libzip-dev libldap2-dev libsasl2-dev python3-setuptools node-less libpng12-0 gdebi -y
 
 echo -e "\n---- Install python packages/requirements ----"
-sudo pip3 install -r https://raw.githubusercontent.com/ShaheenHossain/eagle_13_01/master/requirements.txt
+sudo pip3 install -r https://github.com/ShaheenHossain/eagle_13_01/raw/${OE_VERSION}/requirements.txt
 
-echo -e "\n---- Install python libraries ----"
-# This is for compatibility with Ubuntu 16.04. Will work on 14.04, 15.04 and 16.04
-sudo apt-get install python3-suds
-
-echo -e "\n--- Install other required packages"
-sudo apt-get install node-clean-css -y
-sudo apt-get install node-less -y
-sudo apt-get install python-gevent -y
+echo -e "\n---- Installing nodeJS NPM and rtlcss for LTR support ----"
+sudo apt-get install nodejs npm -y
+sudo npm install -g rtlcss
 
 #--------------------------------------------------
 # Install Wkhtmltopdf if needed
 #--------------------------------------------------
 if [ $INSTALL_WKHTMLTOPDF = "True" ]; then
-  echo -e "\n---- Install wkhtml and place shortcuts on correct place for Eagle 12 ----"
+  echo -e "\n---- Install wkhtml and place shortcuts on correct place for Eagle 13 ----"
   #pick up correct one from x64 & x32 versions:
   if [ "`getconf LONG_BIT`" == "64" ];then
       _url=$WKHTMLTOX_X64
@@ -86,7 +75,7 @@ sudo chown $OE_USER:$OE_USER /var/log/$OE_USER
 #--------------------------------------------------
 # Install Eagle
 #--------------------------------------------------
-echo -e "\n==== Installing Eagle12 Server ===="
+echo -e "\n==== Installing Eagle13 Server ===="
 sudo git clone --depth 1 --branch $OE_VERSION https://github.com/ShaheenHossain/eagle_13_01 $OE_HOME_EXT/
 
 #Enterprise deleted
@@ -114,14 +103,23 @@ sudo chmod 640 /etc/${OE_CONFIG}.conf
 
 #pid file deleted
 
+#echo -e "* Security Init File"
+#sudo mv ~/$OE_CONFIG /etc/init.d/$OE_CONFIG
+#sudo chmod 755 /etc/init.d/$OE_CONFIG
+#sudo chown root: /etc/init.d/$OE_CONFIG
+
+#echo -e "* Starting Eagle ERP Service"
+#sudo su root -c "/etc/init.d/$OE_CONFIG start"
+
+
 echo "-----------------------------------------------------------"
-echo "Done! The Eagle Development 12 server is up and running. Specifications:"
+echo "Done! The Eagle Development 13 server is up and running. Specifications:"
 echo "Port: $OE_PORT"
 echo "User service: $OE_USER"
 echo "User PostgreSQL: $OE_USER"
 echo "Code location: $OE_USER"
 echo "Addons folder: $OE_USER/$OE_CONFIG/addons/"
-echo "Start Eagle 12 service: sudo service $OE_CONFIG start"
-echo "Stop Eagle 12 service: sudo service $OE_CONFIG stop"
-echo "Restart Eagle 12 service: sudo service $OE_CONFIG restart"
+echo "Start Eagle 13 service: sudo service $OE_CONFIG start"
+echo "Stop Eagle 13 service: sudo service $OE_CONFIG stop"
+echo "Restart Eagle 13 service: sudo service $OE_CONFIG restart"
 echo "-----------------------------------------------------------"

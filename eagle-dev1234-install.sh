@@ -1,9 +1,9 @@
 #!/bin/bash
-OE_USER="eagledev1234"
+OE_USER="eagledev1335"
 OE_HOME="/$OE_USER"
 OE_HOME_EXT="/$OE_USER/${OE_USER}-server"
 INSTALL_WKHTMLTOPDF="True"
-OE_PORT="8034"
+OE_PORT="8035"
 OE_VERSION="master"
 OE_SUPERADMIN="admin"
 OE_CONFIG="${OE_USER}-server"
@@ -44,8 +44,7 @@ sudo apt-get install libxml2-dev libxslt1-dev zlib1g-dev -y
 sudo apt-get install libsasl2-dev libldap2-dev libssl-dev -y
 
 echo -e "\n---- Install python packages/requirements ----"
-sudo pip3 install -r https://raw.githubusercontent.com/ShaheenHossain/eagle-12.1/master/requirements.txt
-
+sudo pip3 install -r https://raw.githubusercontent.com/ShaheenHossain/eagle_13_01/master/requirements.txt
 
 echo -e "\n---- Install python libraries ----"
 # This is for compatibility with Ubuntu 16.04. Will work on 14.04, 15.04 and 16.04
@@ -76,7 +75,7 @@ else
 fi
 
 echo -e "\n---- Create Eagle system user ----"
-sudo adduser --system --quiet --shell=/bin/bash --home=$OE_HOME --gecos 'EAGLEDEV1234' --group $OE_USER
+sudo adduser --system --quiet --shell=/bin/bash --home=$OE_HOME --gecos 'EAGLEDEV1335' --group $OE_USER
 #The user should also be added to the sudo'ers group.
 sudo adduser $OE_USER sudo
 
@@ -88,7 +87,7 @@ sudo chown $OE_USER:$OE_USER /var/log/$OE_USER
 # Install Eagle
 #--------------------------------------------------
 echo -e "\n==== Installing Eagle12 Server ===="
-sudo git clone --depth 1 --branch $OE_VERSION https://github.com/ShaheenHossain/eagle-12.3 $OE_HOME_EXT/
+sudo git clone --depth 1 --branch $OE_VERSION https://github.com/ShaheenHossain/eagle_13_01 $OE_HOME_EXT/
 
 #Enterprise deleted
 

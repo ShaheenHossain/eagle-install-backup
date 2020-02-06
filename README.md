@@ -7,13 +7,13 @@ but goes a bit further. This script will also give you the ability to define an 
 <h3>Installation procedure Eagle 12 development</h3>
 
 
-sudo wget https://raw.githubusercontent.com/ShaheenHossain/eagle-install-backup/dev1234/eagle-dev1234-install.sh
+sudo wget https://raw.githubusercontent.com/ShaheenHossain/eagle-install-backup/dev1335/eagle-dev1335-install.sh
 
-sudo chmod +x eagle-dev1234-install.sh
+sudo chmod +x eagle-dev1335-install.sh
 
-sudo ./eagle-dev1234-install.sh
+sudo ./eagle-dev1335-install.sh
 
 ----------------------------------------------
 
-sudo /etc/init.d/deveagle1233-server stop
+sudo /etc/init.d/deveagle1335-server stop
 `

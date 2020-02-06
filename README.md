@@ -4,7 +4,7 @@ but goes a bit further. This script will also give you the ability to define an 
 
 <h2>Dependency Pandas </h2>
 
-<h3>Installation procedure Eagle 12 development</h3>
+<h3>Installation procedure Eagle 13 development for pycharm</h3>
 
 
 sudo wget https://raw.githubusercontent.com/ShaheenHossain/eagle-install-backup/dev1335/eagle-dev1335-install.sh

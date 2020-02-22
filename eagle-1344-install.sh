@@ -1,23 +1,26 @@
 #!/bin/bash
 
-OE_USER="eagle1343"
+OE_USER="eagle1344"
 OE_HOME="/$OE_USER"
 OE_HOME_EXT="/$OE_USER/${OE_USER}-server"
 INSTALL_WKHTMLTOPDF="True"
-OE_PORT="8043"
+OE_PORT="8044"
 OE_VERSION="master"
 IS_ENTERPRISE="False"
+INSTALL_NGINX="False"
 OE_SUPERADMIN="admin"
+GENERATE_RANDOM_PASSWORD="True"
 OE_CONFIG="${OE_USER}-server"
+# Set the website name
+WEBSITE_NAME="_"
+LONGPOLLING_PORT="8072"
 
 WKHTMLTOX_X64=https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.trusty_amd64.deb
 WKHTMLTOX_X32=https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.trusty_i386.deb
-
 #--------------------------------------------------
 # Update Server
 #--------------------------------------------------
 echo -e "\n---- Update Server ----"
-# universe package is for Ubuntu 18.x
 sudo add-apt-repository universe
 # libpng12-0 dependency for wkhtmltopdf
 sudo add-apt-repository "deb http://mirrors.kernel.org/ubuntu/ xenial main"
@@ -30,7 +33,7 @@ sudo apt-get upgrade -y
 echo -e "\n---- Install PostgreSQL Server ----"
 sudo apt-get install postgresql postgresql-server-dev-all -y
 
-echo -e "\n---- Creating the Eagle PostgreSQL User  ----"
+echo -e "\n---- Creating the EAGLE PostgreSQL User  ----"
 sudo su - postgres -c "createuser -s $OE_USER" 2> /dev/null || true
 
 #--------------------------------------------------
@@ -65,8 +68,8 @@ else
   echo "Wkhtmltopdf isn't installed due to the choice of the user!"
 fi
 
-echo -e "\n---- Create Eagle system user ----"
-sudo adduser --system --quiet --shell=/bin/bash --home=$OE_HOME --gecos 'EAGLE1343' --group $OE_USER
+echo -e "\n---- Create EAGLE system user ----"
+sudo adduser --system --quiet --shell=/bin/bash --home=$OE_HOME --gecos 'EAGLE1344' --group $OE_USER
 #The user should also be added to the sudo'ers group.
 sudo adduser $OE_USER sudo
 
@@ -80,31 +83,6 @@ sudo chown $OE_USER:$OE_USER /var/log/$OE_USER
 echo -e "\n==== Installing EAGLE Server ===="
 sudo git clone --depth 1 --branch $OE_VERSION https://github.com/ShaheenHossain/eagle_13_01 $OE_HOME_EXT/
 
-if [ $IS_ENTERPRISE = "True" ]; then
-    # Odoo Enterprise install!
-    echo -e "\n--- Create symlink for node"
-    sudo ln -s /usr/bin/nodejs /usr/bin/node
-    sudo su $OE_USER -c "mkdir $OE_HOME/enterprise"
-    sudo su $OE_USER -c "mkdir $OE_HOME/enterprise/addons"
-
-    GITHUB_RESPONSE=$(sudo git clone --depth 1 --branch $OE_VERSION https://www.github.com/odoo/enterprise "$OE_HOME/enterprise/addons" 2>&1)
-    while [[ $GITHUB_RESPONSE == *"Authentication"* ]]; do
-        echo "------------------------WARNING------------------------------"
-        echo "Your authentication with Github has failed! Please try again."
-        printf "In order to clone and install the EAGLE enterprise version you \nneed to be an offical EAGLE partner and you need access to\nhttp://github.com/odoo/enterprise.\n"
-        echo "TIP: Press ctrl+c to stop this script."
-        echo "-------------------------------------------------------------"
-        echo " "
-        GITHUB_RESPONSE=$(sudo git clone --depth 1 --branch $OE_VERSION https://www.github.com/odoo/enterprise "$OE_HOME/enterprise/addons" 2>&1)
-    done
-
-    echo -e "\n---- Added Enterprise code under $OE_HOME/enterprise/addons ----"
-    echo -e "\n---- Installing Enterprise specific libraries ----"
-    sudo pip3 install num2words ofxparse dbfread ebaysdk firebase_admin pyOpenSSL
-    sudo npm install -g less
-    sudo npm install -g less-plugin-clean-css
-fi
-
 echo -e "\n---- Create custom module directory ----"
 sudo su $OE_USER -c "mkdir $OE_HOME/custom"
 sudo su $OE_USER -c "mkdir $OE_HOME/custom/addons"
@@ -117,9 +95,18 @@ echo -e "* Create server config file"
 sudo touch /etc/${OE_CONFIG}.conf
 echo -e "* Creating server config file"
 sudo su root -c "printf '[options] \n; This is the password that allows database operations:\n' >> /etc/${OE_CONFIG}.conf"
+if [ $GENERATE_RANDOM_PASSWORD = "True" ]; then
+    echo -e "* Generating random admin password"
+    OE_SUPERADMIN=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 16 | head -n 1)
+fi
 sudo su root -c "printf 'admin_passwd = ${OE_SUPERADMIN}\n' >> /etc/${OE_CONFIG}.conf"
-sudo su root -c "printf 'xmlrpc_port = ${OE_PORT}\n' >> /etc/${OE_CONFIG}.conf"
+if [ $OE_VERSION >= "12.0" ];then
+    sudo su root -c "printf 'http_port = ${OE_PORT}\n' >> /etc/${OE_CONFIG}.conf"
+else
+    sudo su root -c "printf 'xmlrpc_port = ${OE_PORT}\n' >> /etc/${OE_CONFIG}.conf"
+fi
 sudo su root -c "printf 'logfile = /var/log/${OE_USER}/${OE_CONFIG}.log\n' >> /etc/${OE_CONFIG}.conf"
+
 if [ $IS_ENTERPRISE = "True" ]; then
     sudo su root -c "printf 'addons_path=${OE_HOME}/enterprise/addons,${OE_HOME_EXT}/addons\n' >> /etc/${OE_CONFIG}.conf"
 else
@@ -134,19 +121,32 @@ sudo su root -c "echo 'sudo -u $OE_USER $OE_HOME_EXT/eagle-bin --config=/etc/${O
 sudo chmod 755 $OE_HOME_EXT/start.sh
 
 #--------------------------------------------------
-# Adding Eagle as a deamon (initscript)
+# Adding EAGLE as a deamon (initscript)
 #--------------------------------------------------
 
 echo -e "* Create init file"
 cat <<EOF > ~/$OE_CONFIG
 #!/bin/sh
+### BEGIN INIT INFO
+# Provides: $OE_CONFIG
+# Required-Start: \$remote_fs \$syslog
+# Required-Stop: \$remote_fs \$syslog
+# Should-Start: \$network
+# Should-Stop: \$network
+# Default-Start: 2 3 4 5
+# Default-Stop: 0 1 6
+# Short-Description: Enterprise Business Applications
+# Description: Eagle ERP Business Applications
+### END INIT INFO
 PATH=/bin:/sbin:/usr/bin
 DAEMON=$OE_HOME_EXT/eagle-bin
 NAME=$OE_CONFIG
 DESC=$OE_CONFIG
 USER=$OE_USER
 CONFIGFILE="/etc/${OE_CONFIG}.conf"
+# pidfile
 PIDFILE=/var/run/\${NAME}.pid
+# Additional options that are passed to the Daemon.
 DAEMON_OPTS="-c \$CONFIGFILE"
 [ -x \$DAEMON ] || exit 0
 [ -f \$CONFIGFILE ] || exit 0
@@ -194,10 +194,98 @@ sudo mv ~/$OE_CONFIG /etc/init.d/$OE_CONFIG
 sudo chmod 755 /etc/init.d/$OE_CONFIG
 sudo chown root: /etc/init.d/$OE_CONFIG
 
-echo -e "* Start Eagle ERP on Startup"
+echo -e "* Start EAGLE on Startup"
 sudo update-rc.d $OE_CONFIG defaults
 
-echo -e "* Starting Eagle ERP Service"
+#--------------------------------------------------
+# Install Nginx if needed
+#--------------------------------------------------
+if [ $INSTALL_NGINX = "True" ]; then
+  echo -e "\n---- Installing and setting up Nginx ----"
+  sudo apt install nginx -y
+  cat <<EOF > ~/eagle1344
+  server {
+  listen 80;
+
+  # set proper server name after domain set
+  server_name $WEBSITE_NAME;
+
+  # Add Headers for eagle proxy mode
+  proxy_set_header X-Forwarded-Host \$host;
+  proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+  proxy_set_header X-Forwarded-Proto \$scheme;
+  proxy_set_header X-Real-IP \$remote_addr;
+  add_header X-Frame-Options "SAMEORIGIN";
+  add_header X-XSS-Protection "1; mode=block";
+  proxy_set_header X-Client-IP \$remote_addr;
+  proxy_set_header HTTP_X_FORWARDED_HOST \$remote_addr;
+
+  #   eagle    log files
+  access_log  /var/log/nginx/$OE_USER-access.log;
+  error_log       /var/log/nginx/$OE_USER-error.log;
+
+  #   increase    proxy   buffer  size
+  proxy_buffers   16  64k;
+  proxy_buffer_size   128k;
+
+  proxy_read_timeout 900s;
+  proxy_connect_timeout 900s;
+  proxy_send_timeout 900s;
+
+  #   force   timeouts    if  the backend dies
+  proxy_next_upstream error   timeout invalid_header  http_500    http_502
+  http_503;
+
+  types {
+  text/less less;
+  text/scss scss;
+  }
+
+  #   enable  data    compression
+  gzip    on;
+  gzip_min_length 1100;
+  gzip_buffers    4   32k;
+  gzip_types  text/css text/less text/plain text/xml application/xml application/json application/javascript application/pdf image/jpeg image/png;
+  gzip_vary   on;
+  client_header_buffer_size 4k;
+  large_client_header_buffers 4 64k;
+  client_max_body_size 0;
+
+  location / {
+  proxy_pass    http://127.0.0.1:$OE_PORT;
+  # by default, do not forward anything
+  proxy_redirect off;
+  }
+
+  location /longpolling {
+  proxy_pass http://127.0.0.1:$LONGPOLLING_PORT;
+  }
+  location ~* .(js|css|png|jpg|jpeg|gif|ico)$ {
+  expires 2d;
+  proxy_pass http://127.0.0.1:$OE_PORT;
+  add_header Cache-Control "public, no-transform";
+  }
+  # cache some static data in memory for 60mins.
+  location ~ /[a-zA-Z0-9_-]*/static/ {
+  proxy_cache_valid 200 302 60m;
+  proxy_cache_valid 404      1m;
+  proxy_buffering    on;
+  expires 864000;
+  proxy_pass    http://127.0.0.1:$OE_PORT;
+  }
+  }
+EOF
+
+  sudo mv ~/eagle1344 /etc/nginx/sites-available/
+  sudo ln -s /etc/nginx/sites-available/eagle1344 /etc/nginx/sites-enabled/eagle1344
+  sudo rm /etc/nginx/sites-enabled/default
+  sudo service nginx reload
+  sudo su root -c "printf 'proxy_mode = True\n' >> /etc/${OE_CONFIG}.conf"
+  echo "Done! The Nginx server is up and running. Configuration can be found at /etc/nginx/sites-available/eagle1344"
+else
+  echo "Nginx isn't installed due to choice of the user!"
+fi
+echo -e "* Starting eagle ERP Service"
 sudo su root -c "/etc/init.d/$OE_CONFIG start"
 echo "-----------------------------------------------------------"
 echo "Done! The Eagle ERP server is up and running. Specifications:"
@@ -206,6 +294,7 @@ echo "User service: $OE_USER"
 echo "User PostgreSQL: $OE_USER"
 echo "Code location: $OE_USER"
 echo "Addons folder: $OE_USER/$OE_CONFIG/addons/"
+echo "Password superadmin (database): $OE_SUPERADMIN"
 echo "Start Eagle ERP service: sudo service $OE_CONFIG start"
 echo "Stop Eagle ERP service: sudo service $OE_CONFIG stop"
 echo "Restart Eagle ERP service: sudo service $OE_CONFIG restart"

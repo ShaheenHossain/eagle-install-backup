@@ -1,10 +1,10 @@
 #!/bin/bash
 
-OE_USER="eagle1346"
+OE_USER="eagle1347"
 OE_HOME="/$OE_USER"
 OE_HOME_EXT="/$OE_USER/${OE_USER}-server"
 INSTALL_WKHTMLTOPDF="True"
-OE_PORT="8046"
+OE_PORT="8047"
 OE_VERSION="master"
 INSTALL_NGINX="False"
 OE_SUPERADMIN="admin"
@@ -41,7 +41,7 @@ echo -e "\n--- Installing Python 3 + pip3 --"
 sudo apt-get install git python3 python3-pip build-essential wget python3-dev python3-venv python3-wheel libxslt-dev libzip-dev libldap2-dev libsasl2-dev python3-setuptools node-less libpng12-0 gdebi -y
 
 echo -e "\n---- Install python packages/requirements ----"
-sudo pip3 install -r https://github.com/ShaheenHossain/eagle13/raw/${OE_VERSION}/requirements.txt
+sudo pip3 install -r https://github.com/ShaheenHossain/eagle13.02/raw/${OE_VERSION}/requirements.txt
 
 echo -e "\n---- Installing nodeJS NPM and rtlcss for LTR support ----"
 sudo apt-get install nodejs npm -y
@@ -67,7 +67,7 @@ else
 fi
 
 echo -e "\n---- Create EAGLE system user ----"
-sudo adduser --system --quiet --shell=/bin/bash --home=$OE_HOME --gecos 'EAGLE1346' --group $OE_USER
+sudo adduser --system --quiet --shell=/bin/bash --home=$OE_HOME --gecos 'EAGLE1347' --group $OE_USER
 #The user should also be added to the sudo'ers group.
 sudo adduser $OE_USER sudo
 

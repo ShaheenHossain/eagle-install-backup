@@ -1,10 +1,10 @@
 #!/bin/bash
-OE_USER="eagledev1336"
+OE_USER="eagledev1032"
 OE_HOME="/$OE_USER"
 OE_HOME_EXT="/$OE_USER/${OE_USER}-server"
 INSTALL_WKHTMLTOPDF="True"
-OE_PORT="8036"
-OE_VERSION="13.0"
+OE_PORT="8032"
+OE_VERSION="10.0"
 OE_SUPERADMIN="admin"
 OE_CONFIG="${OE_USER}-server"
 
@@ -64,7 +64,7 @@ else
 fi
 
 echo -e "\n---- Create Eagle system user ----"
-sudo adduser --system --quiet --shell=/bin/bash --home=$OE_HOME --gecos 'EAGLEDEV1336' --group $OE_USER
+sudo adduser --system --quiet --shell=/bin/bash --home=$OE_HOME --gecos 'EAGLEDEV1032' --group $OE_USER
 #The user should also be added to the sudo'ers group.
 sudo adduser $OE_USER sudo
 

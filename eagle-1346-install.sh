@@ -1,5 +1,3 @@
-#!/bin/bash
-
 OE_USER="eagle1346"
 OE_HOME="/$OE_USER"
 OE_HOME_EXT="/$OE_USER/${OE_USER}-server"
@@ -41,7 +39,7 @@ echo -e "\n--- Installing Python 3 + pip3 --"
 sudo apt-get install git python3 python3-pip build-essential wget python3-dev python3-venv python3-wheel libxslt-dev libzip-dev libldap2-dev libsasl2-dev python3-setuptools node-less libpng12-0 gdebi -y
 
 echo -e "\n---- Install python packages/requirements ----"
-sudo pip3 install -r https://github.com/ShaheenHossain/eagle13/raw/${OE_VERSION}/requirements.txt
+sudo pip3 install -r https://github.com/ShaheenHossain/eagle13.02/raw/${OE_VERSION}/requirements.txt
 
 echo -e "\n---- Installing nodeJS NPM and rtlcss for LTR support ----"
 sudo apt-get install nodejs npm -y
@@ -79,7 +77,7 @@ sudo chown $OE_USER:$OE_USER /var/log/$OE_USER
 # Install EAGLE
 #--------------------------------------------------
 echo -e "\n==== Installing EAGLE Server ===="
-sudo git clone --depth 1 --branch $OE_VERSION https://github.com/ShaheenHossain/eagle13 $OE_HOME_EXT/
+sudo git clone --depth 1 --branch $OE_VERSION https://github.com/ShaheenHossain/eagle13.02 $OE_HOME_EXT/
 
 echo -e "\n---- Create custom module directory ----"
 sudo su $OE_USER -c "mkdir $OE_HOME/custom"
@@ -193,10 +191,8 @@ if [ $INSTALL_NGINX = "True" ]; then
   cat <<EOF > ~/eagle1344
   server {
   listen 80;
-
   # set proper server name after domain set
   server_name $WEBSITE_NAME;
-
   # Add Headers for eagle proxy mode
   proxy_set_header X-Forwarded-Host \$host;
   proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
@@ -206,28 +202,22 @@ if [ $INSTALL_NGINX = "True" ]; then
   add_header X-XSS-Protection "1; mode=block";
   proxy_set_header X-Client-IP \$remote_addr;
   proxy_set_header HTTP_X_FORWARDED_HOST \$remote_addr;
-
   #   eagle    log files
   access_log  /var/log/nginx/$OE_USER-access.log;
   error_log       /var/log/nginx/$OE_USER-error.log;
-
   #   increase    proxy   buffer  size
   proxy_buffers   16  64k;
   proxy_buffer_size   128k;
-
   proxy_read_timeout 900s;
   proxy_connect_timeout 900s;
   proxy_send_timeout 900s;
-
   #   force   timeouts    if  the backend dies
   proxy_next_upstream error   timeout invalid_header  http_500    http_502
   http_503;
-
   types {
   text/less less;
   text/scss scss;
   }
-
   #   enable  data    compression
   gzip    on;
   gzip_min_length 1100;
@@ -237,13 +227,11 @@ if [ $INSTALL_NGINX = "True" ]; then
   client_header_buffer_size 4k;
   large_client_header_buffers 4 64k;
   client_max_body_size 0;
-
   location / {
   proxy_pass    http://127.0.0.1:$OE_PORT;
   # by default, do not forward anything
   proxy_redirect off;
   }
-
   location /longpolling {
   proxy_pass http://127.0.0.1:$LONGPOLLING_PORT;
   }

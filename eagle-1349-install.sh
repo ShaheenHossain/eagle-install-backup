@@ -1,10 +1,10 @@
-OE_USER="eagle1348"
+OE_USER="eagle1349"
 OE_HOME="/$OE_USER"
 OE_HOME_EXT="/$OE_USER/${OE_USER}-server"
 INSTALL_WKHTMLTOPDF="True"
-OE_PORT="8048"
+OE_PORT="8049"
 OE_VERSION="master"
-INSTALL_NGINX="False"
+INSTALL_NGINX="True"
 OE_SUPERADMIN="admin"
 OE_CONFIG="${OE_USER}-server"
 # Set the website name
@@ -65,7 +65,7 @@ else
 fi
 
 echo -e "\n---- Create EAGLE system user ----"
-sudo adduser --system --quiet --shell=/bin/bash --home=$OE_HOME --gecos 'EAGLE1348' --group $OE_USER
+sudo adduser --system --quiet --shell=/bin/bash --home=$OE_HOME --gecos 'EAGLE1349' --group $OE_USER
 #The user should also be added to the sudo'ers group.
 sudo adduser $OE_USER sudo
 
@@ -188,7 +188,7 @@ sudo update-rc.d $OE_CONFIG defaults
 if [ $INSTALL_NGINX = "True" ]; then
   echo -e "\n---- Installing and setting up Nginx ----"
   sudo apt install nginx -y
-  cat <<EOF > ~/eagle1344
+  cat <<EOF > ~/$OE_USER
   server {
   listen 80;
   # set proper server name after domain set
@@ -251,12 +251,12 @@ if [ $INSTALL_NGINX = "True" ]; then
   }
 EOF
 
-  sudo mv ~/eagle1345 /etc/nginx/sites-available/
-  sudo ln -s /etc/nginx/sites-available/eagle1345 /etc/nginx/sites-enabled/eagle1345
+  sudo mv ~/$OE_USER /etc/nginx/sites-available/
+  sudo ln -s /etc/nginx/sites-available/$OE_USER /etc/nginx/sites-enabled/$OE_USER
   sudo rm /etc/nginx/sites-enabled/default
   sudo service nginx reload
   sudo su root -c "printf 'proxy_mode = True\n' >> /etc/${OE_CONFIG}.conf"
-  echo "Done! The Nginx server is up and running. Configuration can be found at /etc/nginx/sites-available/eagle1345"
+  echo "Done! The Nginx server is up and running. Configuration can be found at /etc/nginx/sites-available/$OE_USER"
 else
   echo "Nginx isn't installed due to choice of the user!"
 fi

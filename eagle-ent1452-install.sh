@@ -44,7 +44,7 @@ echo -e "\n--- Installing Python 3 + pip3 --"
 sudo apt-get install git python3 python3-pip build-essential wget python3-dev python3-venv python3-wheel libxslt-dev libzip-dev libldap2-dev libsasl2-dev python3-setuptools node-less libpng12-0 libjpeg-dev gdebi -y
 
 echo -e "\n---- Install python packages/requirements ----"
-sudo -H pip3 install -r https://github.com/ShaheenHossain/odoo14_ent/raw/${OE_VERSION}/requirements.txt
+sudo -H pip3 install -r https://github.com/ShaheenHossain/odoo14_ent_unlimit/raw/${OE_VERSION}/requirements.txt
 
 echo -e "\n---- Installing nodeJS NPM and rtlcss for LTR support ----"
 sudo apt-get install nodejs npm -y
@@ -82,8 +82,7 @@ sudo chown $OE_USER:$OE_USER /var/log/$OE_USER
 # Install Eagle ERP 
 #--------------------------------------------------
 echo -e "\n==== Installing Eagle Server ===="
-sudo git clone --depth 1 --branch $OE_VERSION https://github.com/ShaheenHossain/odoo14_ent $OE_HOME_EXT/
-
+sudo git clone --depth 1 --branch $OE_VERSION https://github.com/ShaheenHossain/odoo14_ent_unlimit $OE_HOME_EXT/
 if [ $IS_ENTERPRISE = "True" ]; then
     # Eagle ERP  Enterprise install!
     echo -e "\n--- Create symlink for node"
@@ -91,7 +90,7 @@ if [ $IS_ENTERPRISE = "True" ]; then
     sudo su $OE_USER -c "mkdir $OE_HOME/enterprise"
     sudo su $OE_USER -c "mkdir $OE_HOME/enterprise/addons"
 
-    GITHUB_RESPONSE=$(sudo git clone --depth 1 --branch $OE_VERSION https://github.com/ShaheenHossain/odoo14_ent "$OE_HOME/enterprise/addons" 2>&1)
+    GITHUB_RESPONSE=$(sudo git clone --depth 1 --branch $OE_VERSION https://github.com/ShaheenHossain/odoo14_ent_unlimit "$OE_HOME/enterprise/addons" 2>&1)
     while [[ $GITHUB_RESPONSE == *"Authentication"* ]]; do
         echo "------------------------WARNING------------------------------"
         echo "Your authentication with Github has failed! Please try again."

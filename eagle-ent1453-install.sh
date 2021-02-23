@@ -5,7 +5,7 @@ INSTALL_WKHTMLTOPDF="True"
 
 OE_PORT="8053"
 # IMPORTANT! This script contains extra libraries that are specifically needed for Eagle 14.0
-OE_VERSION="14.0"
+OE_VERSION="master"
 
 IS_ENTERPRISE="False"
 

@@ -53,7 +53,9 @@ sudo apt-get install git python3 python3-pip build-essential wget python3-dev py
 sudo pip3 install psycopg2-binary pdfminer.six -y
 
 echo -e "\n---- Install python packages/requirements ----"
-sudo -H pip3 install -r https://raw.githubusercontent.com/ShaheenHossain/odoo14_ent_unlimit/master/requirements.txt?token=AGTUIIHOBV4THW2ZSXMQBH3AG53SK
+sudo -H pip3 install -r https://raw.githubusercontent.com/odoo/odoo/14.0/requirements.txt
+
+#sudo -H pip3 install -r https://raw.githubusercontent.com/ShaheenHossain/odoo14_ent_unlimit/master/requirements.txt?token=AGTUIIHOBV4THW2ZSXMQBH3AG53SK
 #sudo -H pip3 install -r https://github.com/ShaheenHossain/odoo14_ent_unlimit/raw/${OE_VERSION}/requirements.txt
 
 echo -e "\n---- Installing nodeJS NPM and rtlcss for LTR support ----"

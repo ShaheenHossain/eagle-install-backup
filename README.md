@@ -8,7 +8,7 @@ This script can be safely used in a multi-odoo code base server because the defa
 <h3>Installation procedure 11</h3>
 
 
-sudo wget https://raw.githubusercontent.com/ShaheenHossain/eagle-install-backup/eaglelitet1454/eaglelite1454-install.sh
+sudo wget https://raw.githubusercontent.com/ShaheenHossain/eagle-install-backup/eaglelite1454/eaglelite1454-install.sh
 
 2. Make the script executable:
 sudo chmod +x eaglelite1454-install.sh

@@ -1,24 +1,24 @@
-OE_USER="eagle1453"
+OE_USER="eagle1454"
 OE_HOME="/$OE_USER"
 OE_HOME_EXT="/$OE_USER/${OE_USER}-server"
 INSTALL_WKHTMLTOPDF="True"
 
-OE_PORT="8053"
+OE_PORT="8054"
 # IMPORTANT! This script contains extra libraries that are specifically needed for Eagle 14.0
 OE_VERSION="master"
 
 IS_ENTERPRISE="False"
 
-INSTALL_NGINX="False"
+INSTALL_NGINX="True"
 
 OE_SUPERADMIN="admin"
 # Set to "True" to generate a random password, "False" to use the variable in OE_SUPERADMIN
 GENERATE_RANDOM_PASSWORD="False"
 OE_CONFIG="${OE_USER}-server"
 # Set the website name
-WEBSITE_NAME="_"
+WEBSITE_NAME="eaglea2z.com"
 LONGPOLLING_PORT="8072"
-ENABLE_SSL="False"
+ENABLE_SSL="True"
 # Provide Email to register ssl certificate
 ADMIN_EMAIL="rapidgrps@gmail.com"
 
@@ -87,7 +87,7 @@ else
 fi
 
 echo -e "\n---- Create EAGLE system user ----"
-sudo adduser --system --quiet --shell=/bin/bash --home=$OE_HOME --gecos 'EAGLE1453' --group $OE_USER
+sudo adduser --system --quiet --shell=/bin/bash --home=$OE_HOME --gecos 'EAGLE1454' --group $OE_USER
 #The user should also be added to the sudo'ers group.
 sudo adduser $OE_USER sudo
 
@@ -250,7 +250,7 @@ sudo update-rc.d $OE_CONFIG defaults
 if [ $INSTALL_NGINX = "True" ]; then
   echo -e "\n---- Installing and setting up Nginx ----"
   sudo apt install nginx -y
-  cat <<EOF > ~/odoo
+  cat <<EOF > ~/eagleent1454
   server {
   listen 80;
   # set proper server name after domain set
@@ -313,12 +313,12 @@ if [ $INSTALL_NGINX = "True" ]; then
   }
 EOF
 
-  sudo mv ~/odoo /etc/nginx/sites-available/
-  sudo ln -s /etc/nginx/sites-available/odoo /etc/nginx/sites-enabled/odoo
+  sudo mv ~/eagleent1454 /etc/nginx/sites-available/
+  sudo ln -s /etc/nginx/sites-available/eagleent1454 /etc/nginx/sites-enabled/eagleent1454
   sudo rm /etc/nginx/sites-enabled/default
   sudo service nginx reload
   sudo su root -c "printf 'proxy_mode = True\n' >> /etc/${OE_CONFIG}.conf"
-  echo "Done! The Nginx server is up and running. Configuration can be found at /etc/nginx/sites-available/odoo"
+  echo "Done! The Nginx server is up and running. Configuration can be found at /etc/nginx/sites-available/eagleent1454"
 else
   echo "Nginx isn't installed due to choice of the user!"
 fi
@@ -327,7 +327,7 @@ fi
 # Enable ssl with certbot
 #--------------------------------------------------
 
-if [ $INSTALL_NGINX = "True" ] && [ $ENABLE_SSL = "True" ] && [ $ADMIN_EMAIL != "eagle@example.com" ]  && [ $WEBSITE_NAME != "_" ];then
+if [ $INSTALL_NGINX = "True" ] && [ $ENABLE_SSL = "True" ] && [ $ADMIN_EMAIL != "rapidgrps@gmail.com" ]  && [ $WEBSITE_NAME != "_" ];then
   sudo add-apt-repository ppa:certbot/certbot -y && sudo apt-get update -y
   sudo apt-get install python3-certbot-nginx -y
   sudo certbot --nginx -d $WEBSITE_NAME --noninteractive --agree-tos --email $ADMIN_EMAIL --redirect
@@ -353,6 +353,6 @@ echo "Start Eagle service: sudo service $OE_CONFIG start"
 echo "Stop Eagle service: sudo service $OE_CONFIG stop"
 echo "Restart Eagle service: sudo service $OE_CONFIG restart"
 if [ $INSTALL_NGINX = "True" ]; then
-  echo "Nginx configuration file: /etc/nginx/sites-available/odoo"
+  echo "Nginx configuration file: /etc/nginx/sites-available/eagleent1454"
 fi
 echo "-----------------------------------------------------------"

@@ -5,7 +5,7 @@ This script can be safely used in a multi-odoo code base server because the defa
 
 <h2>Dependency Pandas </h2>
 
-<h3>Installation procedure 11</h3>
+<h3>Installation procedure 14 enterprise with ssl nginx</h3>
 
 
 sudo wget https://raw.githubusercontent.com/ShaheenHossain/eagle-install-backup/ent1454/eagle-ent1454-install.sh

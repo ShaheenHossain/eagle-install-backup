@@ -9,16 +9,16 @@ OE_VERSION="master"
 
 IS_ENTERPRISE="False"
 
-INSTALL_NGINX="True"
+INSTALL_NGINX="Flase"
 
 OE_SUPERADMIN="admin"
 # Set to "True" to generate a random password, "False" to use the variable in OE_SUPERADMIN
 GENERATE_RANDOM_PASSWORD="False"
 OE_CONFIG="${OE_USER}-server"
 # Set the website name
-WEBSITE_NAME="eaglea2z.com"
+WEBSITE_NAME="_"
 LONGPOLLING_PORT="8072"
-ENABLE_SSL="True"
+ENABLE_SSL="False"
 # Provide Email to register ssl certificate
 ADMIN_EMAIL="rapidgrps@gmail.com"
 

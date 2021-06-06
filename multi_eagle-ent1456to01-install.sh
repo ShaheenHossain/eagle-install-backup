@@ -15,6 +15,10 @@ OE_SUPERADMIN="admin"
 # Set to "True" to generate a random password, "False" to use the variable in OE_SUPERADMIN
 GENERATE_RANDOM_PASSWORD="False"
 OE_CONFIG="${OE_USER}-server"
+
+OE_MAIN_SERVER="eagleent1456"
+OE_MAIN_SERV_CONF="/${OE_MAIN_SERVER}-server"
+
 # Set the website name
 WEBSITE_NAME="_"
 LONGPOLLING_PORT="8072"
@@ -136,10 +140,10 @@ sudo chown -R $OE_USER:$OE_USER $OE_HOME/*
 
 echo -e "* Create server config file"
 
-
 sudo touch /etc/${OE_CONFIG}.conf
 echo -e "* Creating server config file"
 sudo su root -c "printf '[options] \n; This is the password that allows database operations:\n' >> /etc/${OE_CONFIG}.conf"
+
 if [ $GENERATE_RANDOM_PASSWORD = "True" ]; then
     echo -e "* Generating random admin password"
     OE_SUPERADMIN=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 16 | head -n 1)
@@ -155,7 +159,7 @@ sudo su root -c "printf 'logfile = /var/log/${OE_USER}/${OE_CONFIG}.log\n' >> /e
 if [ $IS_ENTERPRISE = "True" ]; then
     sudo su root -c "printf 'addons_path=${OE_HOME}/enterprise/addons,${OE_HOME_EXT}/addons\n' >> /etc/${OE_CONFIG}.conf"
 else
-    sudo su root -c "printf 'addons_path=${OE_HOME_EXT}/eagle/addons,${OE_HOME}/custom/addons\n' >> /etc/${OE_CONFIG}.conf"
+    sudo su root -c "printf 'addons_path=/$OE_MAIN_SERVER/$OE_MAIN_SERV_CONF/eagle/addons,/$OE_MAIN_SERVER/custom/addons\n' >> /etc/${OE_CONFIG}.conf"
 fi
 sudo chown $OE_USER:$OE_USER /etc/${OE_CONFIG}.conf
 sudo chmod 640 /etc/${OE_CONFIG}.conf

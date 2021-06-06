@@ -9,7 +9,6 @@ OE_MAIN_SERVER="eagleent1456"
 OE_MAIN_SERV_CONF="/${OE_MAIN_SERVER}-server"
 
 # Set the website name
-WEBSITE_NAME="_"
 LONGPOLLING_PORT="8072"
 
 # Provide Email to register ssl certificate
@@ -165,7 +164,5 @@ echo "Password superadmin (database): $OE_SUPERADMIN"
 echo "Start Eagle service: sudo service $OE_CONFIG start"
 echo "Stop Eagle service: sudo service $OE_CONFIG stop"
 echo "Restart Eagle service: sudo service $OE_CONFIG restart"
-if [ $INSTALL_NGINX = "True" ]; then
-  echo "Nginx configuration file: /etc/nginx/sites-available/eagleent1454"
-fi
+
 echo "-----------------------------------------------------------"

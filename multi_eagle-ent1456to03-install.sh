@@ -6,7 +6,7 @@ OE_SUPERADMIN="admin"
 OE_CONFIG="${OE_USER}-server"
 OE_VERSION="master"
 
-OE_MAIN_SERVER="eagle1456"
+OE_MAIN_SERVER="eagleent1456"
 OE_MAIN_SERVER_CONF="${OE_MAIN_SERVER}-server"
 
 

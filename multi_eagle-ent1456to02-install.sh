@@ -6,7 +6,7 @@ OE_SUPERADMIN="admin"
 OE_CONFIG="${OE_USER}-server"
 
 OE_MAIN_SERVER="eagleent1456"
-OE_MAIN_SERV_CONF="/${OE_MAIN_SERVER}-server"
+OE_MAIN_SERV_CONF="${OE_MAIN_SERVER}-server"
 
 # Set the website name
 LONGPOLLING_PORT="8072"

@@ -1,18 +1,15 @@
-OE_USER="eaglemlt1402"
+OE_USER="eaglem1402"
 OE_HOME="/$OE_USER"
 OE_HOME_EXT="/$OE_USER/${OE_USER}-server"
 OE_PORT="8002"
 OE_SUPERADMIN="admin"
 OE_CONFIG="${OE_USER}-server"
+OE_VERSION="master"
 
-OE_MAIN_SERVER="eagleent1456"
-OE_MAIN_SERV_CONF="${OE_MAIN_SERVER}-server"
+OE_MAIN_SERVER="eagle1456"
+OE_MAIN_SERVER_CONF="${OE_MAIN_SERVER}-server"
 
-# Set the website name
-LONGPOLLING_PORT="8072"
 
-# Provide Email to register ssl certificate
-ADMIN_EMAIL="rapidgrps@gmail.com"
 
 #--------------------------------------------------
 # Update Server
@@ -20,17 +17,24 @@ ADMIN_EMAIL="rapidgrps@gmail.com"
 echo -e "\n---- Update Server ----"
 # universe package is for Ubuntu 18.x
 sudo add-apt-repository universe
-# libpng12-0 dependency for wkhtmltopdf
-sudo add-apt-repository "deb http://mirrors.kernel.org/ubuntu/ xenial main"
 sudo apt-get update
 sudo apt-get upgrade -y
 
+#--------------------------------------------------
+# Install PostgreSQL Server
+#--------------------------------------------------
+echo -e "\n---- Install PostgreSQL Server ----"
+sudo apt-get install postgresql -y
 
-echo -e "\n---- Creating the Eagle PostgreSQL User  ----"
+#echo -e "\n---- Creating the Eagle12 PostgreSQL User  ----"
 sudo su - postgres -c "createuser -s $OE_USER" 2> /dev/null || true
+echo -e "* Create server config file"
 
-echo -e "\n---- Create EAGLE system user ----"
-sudo adduser --system --quiet --shell=/bin/bash --home=$OE_HOME --gecos 'EAGLEMLT1402' --group $OE_USER
+echo -e "\n---- Create Eagle system user ----"
+sudo adduser --system --quiet --shell=/bin/bash --home=$OE_HOME --gecos 'EAGLEM1402' --group $OE_USER
+#The user should also be added to the sudo'ers group.
+sudo adduser $OE_USER sudo
+
 #The user should also be added to the sudo'ers group.
 sudo adduser $OE_USER sudo
 
@@ -58,8 +62,9 @@ sudo touch /etc/${OE_CONFIG}.conf
 echo -e "* Creating server config file"
 sudo su root -c "printf '[options] \n; This is the password that allows database operations:\n' >> /etc/${OE_CONFIG}.conf"
 
+# Specify the original database addons path (Default: eagle1266-server.conf).
 
-sudo su root -c "printf 'addons_path=/$OE_MAIN_SERVER/$OE_MAIN_SERVER_CONF/addons,/$OE_MAIN_SERVER/custom/addons\n' >> /etc/${OE_CONFIG}.conf"
+sudo su root -c "printf 'addons_path=/$OE_MAIN_SERVER/$OE_MAIN_SERVER_CONF/eagle/addons,/$OE_MAIN_SERVER/custom/addons\n' >> /etc/${OE_CONFIG}.conf"
 sudo su root -c "printf 'db_user = ${OE_USER}\n' >> /etc/${OE_CONFIG}.conf"
 sudo su root -c "printf 'db_passwrord = ${OE_SUPERADMIN}\n' >> /etc/${OE_CONFIG}.conf"
 sudo su root -c "printf 'admin_passwd = ${OE_SUPERADMIN}\n' >> /etc/${OE_CONFIG}.conf"
@@ -76,7 +81,7 @@ sudo chmod 755 $OE_HOME_EXT/start.sh
 
 
 #--------------------------------------------------
-# Adding Eagle as a deamon (initscript)
+# Adding EAGLE as a deamon (initscript)
 #--------------------------------------------------
 
 echo -e "* Create init file"
@@ -93,7 +98,6 @@ cat <<EOF > ~/$OE_CONFIG
 # Short-Description: Enterprise Business Applications
 # Description: EAGLE Business Applications
 ### END INIT INFO
-
 PATH=/bin:/sbin:/usr/bin
 # Specify the original database name (Default: eagle1266).
 DAEMON=/$OE_MAIN_SERVER/$OE_MAIN_SERVER_CONF/eagle-bin
@@ -103,7 +107,6 @@ DESC=$OE_CONFIG
 USER=$OE_USER
 # Specify an alternate config file (Default: /etc/openerp-server.conf).
 CONFIGFILE="/etc/${OE_CONFIG}.conf"
-
 # pidfile
 PIDFILE=/var/run/\${NAME}.pid
 # Additional options that are passed to the Daemon.
@@ -147,9 +150,9 @@ exit 1
 ;;
 esac
 exit 0
-
 EOF
-cho -e "* Security Init File"
+
+echo -e "* Security Init File"
 sudo mv ~/$OE_CONFIG /etc/init.d/$OE_CONFIG
 sudo chmod 755 /etc/init.d/$OE_CONFIG
 sudo chown root: /etc/init.d/$OE_CONFIG
@@ -165,7 +168,7 @@ echo "Port: $OE_PORT"
 echo "User service: $OE_USER"
 echo "User PostgreSQL: $OE_USER"
 echo "Code location: $OE_USER"
-echo "Addons folder: /$OE_MAIN_SERVER/$OE_MAIN_SERVER_CONF/addons/eagle/"
+echo "Addons folder: /$OE_MAIN_SERVER/$OE_MAIN_SERVER_CONF/eagle/addons/"
 echo "Start Eagle 12 service: sudo service $OE_CONFIG start"
 echo "Stop Eagle 12 service: sudo service $OE_CONFIG stop"
 echo "Restart Eagle 12 service: sudo service $OE_CONFIG restart"

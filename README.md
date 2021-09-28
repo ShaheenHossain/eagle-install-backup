@@ -18,7 +18,7 @@ sudo ./eagle-ent1469-install.sh
 
 
 
-sudo /etc/init.d/eagle1454-server stop
+sudo /etc/init.d/eagle1469-server stop
 
 
 ```

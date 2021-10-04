@@ -7,7 +7,6 @@ This script can be safely used in a multi-odoo code base server because the defa
 
 <h3>Installation procedure 11</h3>
 
-
 sudo wget https://raw.githubusercontent.com/ShaheenHossain/eagle-install-backup/cpa1342/eagle-1342-install.sh
 
 2. Make the script executable:

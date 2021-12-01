@@ -1,9 +1,9 @@
-OE_USER="eagle1469"
+OE_USER="eagle1470"
 OE_HOME="/$OE_USER"
 OE_HOME_EXT="/$OE_USER/${OE_USER}-server"
 INSTALL_WKHTMLTOPDF="True"
 
-OE_PORT="8069"
+OE_PORT="8070"
 # IMPORTANT! This script contains extra libraries that are specifically needed for Eagle 14.0
 OE_VERSION="master"
 
@@ -87,7 +87,7 @@ else
 fi
 
 echo -e "\n---- Create EAGLE system user ----"
-sudo adduser --system --quiet --shell=/bin/bash --home=$OE_HOME --gecos 'EAGLE1469' --group $OE_USER
+sudo adduser --system --quiet --shell=/bin/bash --home=$OE_HOME --gecos 'EAGLE1470' --group $OE_USER
 #The user should also be added to the sudo'ers group.
 sudo adduser $OE_USER sudo
 

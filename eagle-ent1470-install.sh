@@ -60,9 +60,6 @@ sudo pip3 install psycopg2-binary pdfminer.six -y
 echo -e "\n---- Install python packages/requirements ----"
 sudo -H pip3 install -r https://raw.githubusercontent.com/odoo/odoo/14.0/requirements.txt
 
-#sudo -H pip3 install -r https://raw.githubusercontent.com/ShaheenHossain/odoo14_ent_unlimit/master/requirements.txt?token=AGTUIIHOBV4THW2ZSXMQBH3AG53SK
-#sudo -H pip3 install -r https://github.com/ShaheenHossain/odoo14_ent_unlimit/raw/${OE_VERSION}/requirements.txt
-
 echo -e "\n---- Installing nodeJS NPM and rtlcss for LTR support ----"
 sudo apt-get install nodejs npm -y
 sudo npm install -g rtlcss
@@ -99,7 +96,7 @@ sudo chown $OE_USER:$OE_USER /var/log/$OE_USER
 # Install EAGLE
 #--------------------------------------------------
 echo -e "\n==== Installing EAGLE Server ===="
-sudo git clone --depth 1 --branch $OE_VERSION https://github.com/ShaheenHossain/niiarmahgh_14_ent_01 $OE_HOME_EXT/
+sudo git clone --depth 1 --branch $OE_VERSION https://github.com/ShaheenHossain/chaker_ouari_14ent $OE_HOME_EXT/
 
 if [ $IS_ENTERPRISE = "True" ]; then
     # EAGLE Enterprise install!

@@ -1,9 +1,9 @@
-OE_USER="eagleent1560"
+OE_USER="eaglecentos1561"
 OE_HOME="/$OE_USER"
 OE_HOME_EXT="/$OE_USER/${OE_USER}-server"
 INSTALL_WKHTMLTOPDF="True"
 
-OE_PORT="8060"
+OE_PORT="8061"
 # IMPORTANT! This script contains extra libraries that are specifically needed for Eagle 15.0
 OE_VERSION="master"
 

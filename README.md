@@ -7,6 +7,7 @@ This script can be safely used in a multi-odoo code base server because the defa
 
 <h3>Installation procedure 15 ent with ssl nginx</h3>
 
+sudo yum -y install wget
 
 sudo wget https://raw.githubusercontent.com/ShaheenHossain/eagle-install-backup/cent1561/eagle-cntos1561-install.sh
 

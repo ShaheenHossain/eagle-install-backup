@@ -8,11 +8,11 @@ This script can be safely used in a multi-odoo code base server because the defa
 <h3>Installation procedure 15 ent with ssl nginx</h3>
 
 
-sudo wget https://raw.githubusercontent.com/ShaheenHossain/eagle-install-backup/eagleent1560/eagle-ent1560-install.sh
+sudo wget https://raw.githubusercontent.com/ShaheenHossain/eagle-install-backup/cent1561/eagle-cent1561-install.sh
 
-sudo chmod +x eagle-ent1560-install.sh
+sudo chmod +x eagle-cent1561-install.sh
 
-sudo ./eagle-ent1560-install.sh
+sudo ./eagle-cent1561-install.sh
 
 
 

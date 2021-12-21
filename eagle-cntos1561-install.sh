@@ -1,15 +1,11 @@
-OE_USER="eaglecentos1561"
+OE_USER="ecent1561"
 OE_HOME="/$OE_USER"
 OE_HOME_EXT="/$OE_USER/${OE_USER}-server"
 INSTALL_WKHTMLTOPDF="True"
 
 OE_PORT="8061"
 # IMPORTANT! This script contains extra libraries that are specifically needed for Eagle 15.0
-OE_VERSION="master"
-
-IS_ENTERPRISE="False"
-
-INSTALL_NGINX="Flase"
+OE_VERSION="15.0"
 
 OE_SUPERADMIN="admin"
 # Set to "True" to generate a random password, "False" to use the variable in OE_SUPERADMIN
@@ -70,7 +66,10 @@ sudo systemctl start postgresql-13.service
 sudo systemctl enable postgresql-13.service
 
 sudo su - postgres -c "createuser -s $OE_USER"
-sudo useradd -m -U -r -d $OE_HOME -s /bin/bash $OE_USER
+
+#sudo useradd -m -U -r -d $OE_HOME -s /bin/bash $OE_USER
+
+sudo su - postgres -c "createuser -s $OE_USER" 2> /dev/null || true
 
 sudo yum install wkhtmltopdf -y
 
@@ -87,6 +86,62 @@ sudo git clone --depth 1 --branch $OE_VERSION https://www.github.com/odoo/odoo $
 sudo mv $OE_HOME_EXT/odoo.py $OE_HOME_EXT/odoo-bin
 sudo mkdir $OE_HOME/custom
 sudo mkdir $OE_HOME/custom/addons
+
+
+sudo su root -c "touch '$OE_CONFIG'"
+
+sudo su root -c "echo "[options]" >> $OE_CONFIG"
+sudo su root -c "echo ';This is the password that allows database operations:' >> $OE_CONFIG"
+sudo su root -c "echo 'admin_passwd = $OE_MASTER_PASSWD' >> $OE_CONFIG"
+sudo su root -c "echo 'xmlrpc_port = $OE_PORT' >> $OE_CONFIG"
+sudo su root -c "echo 'logfile = /var/log/$OE_USER/$OE_USER.log' >> $OE_CONFIG"
+
+sudo chmod 640 $OE_CONFIG
+
+echo -e "\n---- Creating systemd config file"
+sudo touch /etc/systemd/system/$OE_USER.service
+
+sudo su root -c "echo "[Unit]" >> /etc/systemd/system/$OE_USER.service"
+sudo su root -c "echo 'Description=Odoo server' >> /etc/systemd/system/$OE_USER.service"
+sudo su root -c "echo '#Requires=postgresql-9.6.service' >> /etc/systemd/system/$OE_USER.service"
+sudo su root -c "echo '#After=network.target postgresql-9.6.service' >> /etc/systemd/system/$OE_USER.service"
+sudo su root -c "echo "[Service]" >> /etc/systemd/system/$OE_USER.service"
+sudo su root -c "echo 'Type=simple' >> /etc/systemd/system/$OE_USER.service"
+sudo su root -c "echo 'SyslogIdentifier=odoo15' >> /etc/systemd/system/$OE_USER.service"
+sudo su root -c "echo 'PermissionsStartOnly=true' >> /etc/systemd/system/$OE_USER.service"
+sudo su root -c "echo 'User=$OE_USER' >> /etc/systemd/system/$OE_USER.service"
+sudo su root -c "echo 'Group=$OE_USER' >> /etc/systemd/system/$OE_USER.service"
+sudo su root -c "echo 'ExecStart=$OE_HOME/$OE_USER/odoo-bin -c /etc/$OE_USER.conf' >> /etc/systemd/system/$OE_USER.service"
+sudo su root -c "echo 'StandardOutput=journal+console' >> /etc/systemd/system/$OE_USER.service"
+sudo su root -c "echo "[Install]" >> /etc/systemd/system/$OE_USER.service"
+sudo su root -c "echo 'WantedBy=multi-user.target' >> /etc/systemd/system/$OE_USER.service"
+
+
+echo -e "\n---- Start OE on Startup"
+sudo chmod +x /etc/systemd/system/$OE_USER.service
+sudo systemctl daemon-reload
+
+sudo chown -R $OE_USER: $OE_HOME
+sudo chown $OE_USER: $OE_CONFIG
+
+echo -e "\n---- Starting Odoo Service"
+
+sudo systemctl start $OE_USER.service
+sudo systemctl enable $OE_USER.service
+sudo systemctl status $OE_USER.service
+
+echo "-----------------------------------------------------------"
+echo "Done! The Odoo server is up and running. Specifications:"
+echo "-----------------------------------------------------------"
+echo "Port: $OE_PORT"
+echo "Master password: $OE_MASTER_PASSWD"
+echo "User service: $OE_USER"
+echo "User PostgreSQL: $OE_USER"
+echo "Addons folder: $OE_HOME_EXT/addons and $OE_HOME/custom/addons"
+echo "Start Odoo service: service $OE_USER start"
+echo "Stop Odoo service: service $OE_USER stop"
+echo "Restart Odoo service: service $OE_USER restart"
+
 
 
 

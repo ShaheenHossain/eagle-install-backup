@@ -69,6 +69,27 @@ sudo /usr/pgsql-13/bin/postgresql-13-setup initdb
 sudo systemctl start postgresql-13.service
 sudo systemctl enable postgresql-13.service
 
+sudo su - postgres -c "createuser -s $OE_USER"
+sudo useradd -m -U -r -d $OE_HOME -s /bin/bash $OE_USER
+
+sudo yum install wkhtmltopdf -y
+
+sudo mkdir /var/log/$OE_USER
+
+
+#--------------------------------------------------
+# Install ODOO
+#--------------------------------------------------
+echo -e "\n==== Installing ODOO Server ===="
+sudo git clone --depth 1 --branch $OE_VERSION https://www.github.com/odoo/odoo $OE_HOME_EXT/
+
+
+sudo mv $OE_HOME_EXT/odoo.py $OE_HOME_EXT/odoo-bin
+sudo mkdir $OE_HOME/custom
+sudo mkdir $OE_HOME/custom/addons
+
+
+
 #--------------------------------------------------
 # Install PostgreSQL Server
 #--------------------------------------------------

@@ -64,6 +64,10 @@ sudo npm install -g rtlcss
 
 sudo yum install https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm -y
 sudo yum install postgresql13 postgresql13-server postgresql13-contrib postgresql13-libs -y
+sudo /usr/pgsql-13/bin/postgresql-13-setup initdb
+
+sudo systemctl start postgresql-13.service
+sudo systemctl enable postgresql-13.service
 
 #--------------------------------------------------
 # Install PostgreSQL Server

@@ -35,13 +35,46 @@ sudo yum -y install epel-release
 # libpng12-0 dependency for wkhtmltopdf
 # sudo add-apt-repository "deb http://mirrors.kernel.org/ubuntu/ xenial main"
 
-sudo yum -y update
+sudo yum update -y
 sudo yum upgrade -y
+
+sudo yum install epel-release wget git gcc libxslt-devel bzip2-devel openldap-devel libjpeg-devel freetype-devel -y
+
+sudo yum install python-pip -y
+#sudo pip install --upgrade pip
+sudo pip install --upgrade setuptools
+sudo pip install Babel decorator docutils ebaysdk feedparser gevent greenlet jcconv Jinja2 lxml Mako MarkupSafe mock ofxparse passlib Pillow psutil psycogreen psycopg2-binary pydot pyparsing pyPdf pyserial Python-Chart python-dateutil python-ldap python-openid pytz pyusb PyYAML qrcode reportlab requests six suds-jurko vatnumber vobject Werkzeug wsgiref XlsxWriter xlwt xlrd
+sudo pip install -r https://raw.githubusercontent.com/odoo/odoo/15.0/requirements.txt
+sudo yum install python36 -y
+
+sudo yum install python36 python36-devel
+
+sudo yum -y install gcc git wget nodejs libxslt-devel bzip2-devel openldap-devel freetype-devel libjpeg-devel
+
+#sudo yum install git gcc wget nodejs libxslt-devel bzip2-devel openldap-devel libjpeg-devel freetype-devel
+
+sudo yum install python36-devel libxslt-devel libxml2-devel openldap-devel python36-setuptools python-devel -y
+python3.6 -m ensurepip
+sudo pip3 install pypdf2 Babel passlib Werkzeug decorator python-dateutil pyyaml psycopg2-binary psutil html2text docutils lxml pillow reportlab ninja2 requests gdata XlsxWriter vobject python-openid pyparsing pydot mock mako Jinja2 ebaysdk feedparser xlwt psycogreen suds-jurko pytz pyusb greenlet xlrd num2words
+sudo pip3 install -r https://raw.githubusercontent.com/odoo/odoo/15.0/requirements.txt
+
+echo -e "\n--- Install other required packages"
+sudo yum install nodejs npm -y
+sudo npm install -g less
+sudo npm install -g less-plugin-clean-css
+sudo npm install -g rtlcss
+
+sudo yum install https://download.postgresql.org/pub/repos/yum/9.6/redhat/rhel-7-x86_64/pgdg-redhat96-9.6-3.noarch.rpm -y
+sudo yum install postgresql96 postgresql96-server postgresql96-contrib postgresql96-libs -y
+
 
 #--------------------------------------------------
 # Install PostgreSQL Server
 #--------------------------------------------------
 echo -e "\n---- Install PostgreSQL Server ----"
+
+
+
 sudo yum -y install postgresql postgresql-server postgresql-contrib
 
 # sudo apt-get install postgresql postgresql-server-dev-all -y

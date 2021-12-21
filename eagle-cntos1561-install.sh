@@ -49,9 +49,7 @@ sudo yum install python36 -y
 
 sudo yum install python36 python36-devel
 
-sudo yum -y install gcc git wget nodejs libxslt-devel bzip2-devel openldap-devel freetype-devel libjpeg-devel
-
-#sudo yum install git gcc wget nodejs libxslt-devel bzip2-devel openldap-devel libjpeg-devel freetype-devel
+sudo yum -y install git gcc wget nodejs libxslt-devel bzip2-devel openldap-devel libjpeg-devel freetype-devel
 
 sudo yum install python36-devel libxslt-devel libxml2-devel openldap-devel python36-setuptools python-devel -y
 python3.6 -m ensurepip
@@ -64,9 +62,8 @@ sudo npm install -g less
 sudo npm install -g less-plugin-clean-css
 sudo npm install -g rtlcss
 
-sudo yum install https://download.postgresql.org/pub/repos/yum/9.6/redhat/rhel-7-x86_64/pgdg-redhat96-9.6-3.noarch.rpm -y
-sudo yum install postgresql96 postgresql96-server postgresql96-contrib postgresql96-libs -y
-
+sudo yum install https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm -y
+sudo yum install postgresql13 postgresql13-server postgresql13-contrib postgresql13-libs -y
 
 #--------------------------------------------------
 # Install PostgreSQL Server

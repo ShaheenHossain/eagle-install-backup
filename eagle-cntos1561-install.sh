@@ -84,16 +84,31 @@ sudo mv $OE_HOME_EXT/odoo.py $OE_HOME_EXT/odoo-bin
 sudo mkdir $OE_HOME/custom
 sudo mkdir $OE_HOME/custom/addons
 
+sudo touch /etc/${OE_CONFIG}.conf
+echo -e "* Creating server config file"
+sudo su root -c "printf '[options] \n; This is the password that allows database operations:\n' >> /etc/${OE_CONFIG}.conf"
+sudo su root -c "printf 'admin_passwd = ${OE_SUPERADMIN}\n' >> /etc/${OE_CONFIG}.conf"
+sudo su root -c "printf 'xmlrpc_port = ${OE_PORT}\n' >> /etc/${OE_CONFIG}.conf"
+sudo su root -c "printf 'logfile = /var/log/${OE_USER}/${OE_CONFIG}.log\n' >> /etc/${OE_CONFIG}.conf"
+sudo su root -c "printf 'addons_path=${OE_HOME_EXT}/odoo/addons,${OE_HOME}/custom/addons\n' >> /etc/${OE_CONFIG}.conf"
+sudo chown $OE_USER:$OE_USER /etc/${OE_CONFIG}.conf
+sudo chmod 640 /etc/${OE_CONFIG}.conf
 
-sudo su root -c "touch '$OE_CONFIG'"
+echo -e "* Create startup file"
+sudo su root -c "echo '#!/bin/sh' >> $OE_HOME_EXT/start.sh"
+sudo su root -c "echo 'sudo -u $OE_USER $OE_HOME_EXT/odoo-bin --config=/etc/${OE_CONFIG}.conf' >> $OE_HOME_EXT/start.sh"
+sudo chmod 755 $OE_HOME_EXT/start.sh
 
-sudo su root -c "echo "[options]" >> $OE_CONFIG"
-sudo su root -c "echo ';This is the password that allows database operations:' >> $OE_CONFIG"
-sudo su root -c "echo 'admin_passwd = $OE_MASTER_PASSWD' >> $OE_CONFIG"
-sudo su root -c "echo 'xmlrpc_port = $OE_PORT' >> $OE_CONFIG"
-sudo su root -c "echo 'logfile = /var/log/$OE_USER/$OE_USER.log' >> $OE_CONFIG"
+#sudo su root -c "touch '$OE_CONFIG'"
 
-sudo chmod 640 $OE_CONFIG
+#sudo su root -c "echo "[options]" >> $OE_CONFIG"
+#sudo su root -c "echo ';This is the password that allows database operations:' >> $OE_CONFIG"
+#sudo su root -c "echo 'admin_passwd = $OE_MASTER_PASSWD' >> $OE_CONFIG"
+#sudo su root -c "echo 'xmlrpc_port = $OE_PORT' >> $OE_CONFIG"
+#sudo su root -c "echo 'logfile = /var/log/$OE_USER/$OE_USER.log' >> $OE_CONFIG"
+#sudo chmod 640 $OE_CONFIG
+
+
 
 echo -e "\n---- Creating systemd config file"
 sudo touch /etc/systemd/system/$OE_USER.service

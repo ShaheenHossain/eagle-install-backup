@@ -39,7 +39,7 @@ sudo yum install python-pip -y
 sudo pip install --upgrade setuptools
 sudo pip install Babel decorator docutils ebaysdk feedparser gevent greenlet jcconv Jinja2 lxml Mako MarkupSafe mock ofxparse passlib Pillow psutil psycogreen psycopg2-binary pydot pyparsing pyPdf pyserial Python-Chart python-dateutil python-ldap python-openid pytz pyusb PyYAML qrcode reportlab requests six suds-jurko vatnumber vobject Werkzeug wsgiref XlsxWriter xlwt xlrd
 sudo pip install -r https://raw.githubusercontent.com/odoo/odoo/15.0/requirements.txt
-sudo yum install python36 -y
+sudo yum install python39 -y
 
 sudo yum install python36 python36-devel
 

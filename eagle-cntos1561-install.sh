@@ -41,11 +41,11 @@ sudo pip install Babel decorator docutils ebaysdk feedparser gevent greenlet jcc
 sudo pip install -r https://raw.githubusercontent.com/odoo/odoo/15.0/requirements.txt
 sudo yum install python39 -y
 
-sudo yum install python36 python36-devel
+sudo yum install python39 python39-devel
 
 sudo yum -y install git gcc wget nodejs libxslt-devel bzip2-devel openldap-devel libjpeg-devel freetype-devel
 
-sudo yum install python36-devel libxslt-devel libxml2-devel openldap-devel python36-setuptools python-devel -y
+sudo yum install python39-devel libxslt-devel libxml2-devel openldap-devel python39-setuptools python-devel -y
 python3.6 -m ensurepip
 sudo pip3 install pypdf2 Babel passlib Werkzeug decorator python-dateutil pyyaml psycopg2-binary psutil html2text docutils lxml pillow reportlab ninja2 requests gdata XlsxWriter vobject python-openid pyparsing pydot mock mako Jinja2 ebaysdk feedparser xlwt psycogreen suds-jurko pytz pyusb greenlet xlrd num2words
 sudo pip3 install -r https://raw.githubusercontent.com/odoo/odoo/15.0/requirements.txt
@@ -66,9 +66,9 @@ sudo systemctl enable postgresql-13.service
 sudo su - postgres -c "createuser -s $OE_USER"
 sudo useradd -m -U -r -d $OE_HOME -s /bin/bash $OE_USER
 
-sudo yum install wkhtmltopdf -y
+#sudo yum install wkhtmltopdf -y
 
-#sudo yum -y install https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox-0.12.5-1.centos7.x86_64.rpm
+sudo yum -y install https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox-0.12.5-1.centos7.x86_64.rpm
 
 sudo mkdir /var/log/$OE_USER
 

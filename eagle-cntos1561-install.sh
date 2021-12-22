@@ -19,8 +19,12 @@ sudo yum -y install epel-release
 
 sudo yum update -y
 sudo yum upgrade -y
-
+sudo yum groupinstall 'Development Tools' -y
 sudo yum install epel-release wget git gcc libxslt-devel bzip2-devel openldap-devel libjpeg-devel freetype-devel -y
+
+yum install -y centos-release-scl
+yum install -y rh-python39
+scl enable rh-python39 bash
 
 sudo yum install python-pip -y
 #sudo pip install --upgrade pip
@@ -86,6 +90,34 @@ echo -e "* Create startup file"
 sudo su root -c "echo '#!/bin/sh' >> $OE_HOME_EXT/start.sh"
 sudo su root -c "echo 'sudo -u $OE_USER $OE_HOME_EXT/odoo-bin --config=/etc/${OE_CONFIG}.conf' >> $OE_HOME_EXT/start.sh"
 sudo chmod 755 $OE_HOME_EXT/start.sh
+
+
+
+[Unit]
+Description=Odoo
+Requires=postgresql-11.service
+After=network.target postgresql-11.service
+
+[Service]
+Type=simple
+SyslogIdentifier=odoo
+PermissionsStartOnly=true
+User=odoo
+Group=odoo
+ExecStart=/usr/bin/scl enable rh-python36 -- /opt/odoo/odoo12-venv/bin/python3 /opt/odoo/odoo/odoo-bin -c /etc/odoo.conf
+StandardOutput=journal+console
+
+[Install]
+WantedBy=multi-user.target
+
+
+
+
+
+
+
+
+
 
 
 cat <<EOF > ~/$OE_CONFIG
@@ -180,9 +212,6 @@ echo "Start Eagle service: sudo service $OE_CONFIG start"
 echo "Stop Eagle service: sudo service $OE_CONFIG stop"
 echo "Restart Eagle service: sudo service $OE_CONFIG restart"
 echo "-----------------------------------------------------------"
-
-
-
 
 
 

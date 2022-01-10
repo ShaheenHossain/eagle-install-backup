@@ -53,7 +53,8 @@ sudo su - postgres -c "createuser -s $OE_USER" 2> /dev/null || true
 # Install Dependencies
 #--------------------------------------------------
 echo -e "\n--- Installing Python 3 + pip3 --"
-sudo apt-get install git python3 python3-pip build-essential wget python3-dev python3-venv python3-wheel libxslt-dev libzip-dev libldap2-dev libsasl2-dev python3-setuptools node-less libpng12-0 libjpeg-dev gdebi -y
+sudo apt-get install git python3 python3-pip build-essential wget python3-dev python3-venv python3-wheel libxslt-dev libzip-dev libldap2-dev libsasl2-dev python3-setuptools node-less libjpeg-dev gdebi -y
+# not working libpng12-0 
 
 sudo pip3 install psycopg2-binary pdfminer.six -y
 
@@ -96,7 +97,7 @@ sudo chown $OE_USER:$OE_USER /var/log/$OE_USER
 # Install EAGLE
 #--------------------------------------------------
 echo -e "\n==== Installing EAGLE Server ===="
-sudo git clone --depth 1 --branch $OE_VERSION https://github.com/ShaheenHossain/johnkbl_15ent $OE_HOME_EXT/
+sudo git clone --depth 1 --branch $OE_VERSION https://github.com/ShaheenHossain/solver1_15ent $OE_HOME_EXT/
 
 if [ $IS_ENTERPRISE = "True" ]; then
     # EAGLE Enterprise install!

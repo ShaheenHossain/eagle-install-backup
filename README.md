@@ -8,17 +8,17 @@ This script can be safely used in a multi-odoo code base server because the defa
 <h3>Installation procedure 14 enterprise with ssl nginx</h3>
 
 
-sudo wget https://raw.githubusercontent.com/ShaheenHossain/eagle-install-backup/chaker_ouari_1470/eagle-ent1470-install.sh
+sudo wget https://raw.githubusercontent.com/ShaheenHossain/eagle-install-backup/chaker_ouari_c1471/eagle-c1471-install.sh
 
 2. Make the script executable:
-sudo chmod +x eagle-ent1470-install.sh
+sudo chmod +x eagle-c1471-install.sh
 
 3. Execute the script:
-sudo ./eagle-ent1470-install.sh
+sudo ./eagle-c1471-install.sh
 
 
 
-sudo /etc/init.d/eagle1469-server stop
+sudo /etc/init.d/eagle1471-server stop
 
 
 ```

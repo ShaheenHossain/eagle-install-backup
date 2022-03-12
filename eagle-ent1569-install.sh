@@ -96,7 +96,7 @@ sudo chown $OE_USER:$OE_USER /var/log/$OE_USER
 # Install EAGLE
 #--------------------------------------------------
 echo -e "\n==== Installing EAGLE Server ===="
-sudo git clone --depth 1 --branch $OE_VERSION https://github.com/ShaheenHossain/marko53_mbp_15ent $OE_HOME_EXT/
+sudo git clone --depth 1 --branch $OE_VERSION https://github.com/ShaheenHossain/drazank_holli_15ent $OE_HOME_EXT/
 
 if [ $IS_ENTERPRISE = "True" ]; then
     # EAGLE Enterprise install!

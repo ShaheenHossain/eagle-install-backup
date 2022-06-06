@@ -8,7 +8,7 @@ This script can be safely used in a multi-odoo code base server because the defa
 <h3>Installation procedure 14 enterprise with ssl nginx</h3>
 
 
-sudo wget https://raw.githubusercontent.com/ShaheenHossain/eagle-install-backup/eagle_1075/eagle-1075-install.sh
+sudo wget https://raw.githubusercontent.com/ShaheenHossain/eagle-install-backup/eagle1075/eagle-1075-install.sh
 
 2. Make the script executable:
 sudo chmod +x eagle-1075-install.sh

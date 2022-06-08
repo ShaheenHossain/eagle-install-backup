@@ -8,13 +8,13 @@ This script can be safely used in a multi-odoo code base server because the defa
 <h3>Installation procedure 14 enterprise with ssl nginx</h3>
 
 
-sudo wget https://raw.githubusercontent.com/ShaheenHossain/eagle-install-backup/cpafdent1474/eagle-ent1474-install.sh
+sudo wget https://raw.githubusercontent.com/ShaheenHossain/eagle-install-backup/gbeng1469/eagle-ent1469-install.sh
 
 
-sudo chmod +x eagle-ent1474-install.sh
+sudo chmod +x eagle-ent1469-install.sh
 
 
-sudo ./eagle-ent1474-install.sh
+sudo ./eagle-ent1469-install.sh
 
 
 

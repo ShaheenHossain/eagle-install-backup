@@ -1,9 +1,9 @@
-OE_USER="eagle1564"
+OE_USER="eagle1569"
 OE_HOME="/$OE_USER"
 OE_HOME_EXT="/$OE_USER/${OE_USER}-server"
 INSTALL_WKHTMLTOPDF="True"
 
-OE_PORT="8064"
+OE_PORT="8069"
 # IMPORTANT! This script contains extra libraries that are specifically needed for Eagle 15.0
 OE_VERSION="master"
 
@@ -84,7 +84,7 @@ else
 fi
 
 echo -e "\n---- Create EAGLE system user ----"
-sudo adduser --system --quiet --shell=/bin/bash --home=$OE_HOME --gecos 'EAGLE1564' --group $OE_USER
+sudo adduser --system --quiet --shell=/bin/bash --home=$OE_HOME --gecos 'EAGLE1569' --group $OE_USER
 #The user should also be added to the sudo'ers group.
 sudo adduser $OE_USER sudo
 
@@ -152,14 +152,14 @@ sudo su root -c "printf 'logfile = /var/log/${OE_USER}/${OE_CONFIG}.log\n' >> /e
 if [ $IS_ENTERPRISE = "True" ]; then
     sudo su root -c "printf 'addons_path=${OE_HOME}/enterprise/addons,${OE_HOME_EXT}/addons\n' >> /etc/${OE_CONFIG}.conf"
 else
-    sudo su root -c "printf 'addons_path=${OE_HOME_EXT}/ubunzu/addons,${OE_HOME}/custom/addons\n' >> /etc/${OE_CONFIG}.conf"
+    sudo su root -c "printf 'addons_path=${OE_HOME_EXT}/holo/addons,${OE_HOME}/custom/addons\n' >> /etc/${OE_CONFIG}.conf"
 fi
 sudo chown $OE_USER:$OE_USER /etc/${OE_CONFIG}.conf
 sudo chmod 640 /etc/${OE_CONFIG}.conf
 
 echo -e "* Create startup file"
 sudo su root -c "echo '#!/bin/sh' >> $OE_HOME_EXT/start.sh"
-sudo su root -c "echo 'sudo -u $OE_USER $OE_HOME_EXT/ubunzu-bin --config=/etc/${OE_CONFIG}.conf' >> $OE_HOME_EXT/start.sh"
+sudo su root -c "echo 'sudo -u $OE_USER $OE_HOME_EXT/holo-bin --config=/etc/${OE_CONFIG}.conf' >> $OE_HOME_EXT/start.sh"
 sudo chmod 755 $OE_HOME_EXT/start.sh
 
 #--------------------------------------------------
@@ -181,10 +181,10 @@ cat <<EOF > ~/$OE_CONFIG
 # Description: Eagle Business Applications
 ### END INIT INFO
 PATH=/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/bin
-DAEMON=$OE_HOME_EXT/ubunzu-bin
+DAEMON=$OE_HOME_EXT/holo-bin
 NAME=$OE_CONFIG
 DESC=$OE_CONFIG
-# Specify the user name (Default: ubunzu).
+# Specify the user name (Default: holo).
 USER=$OE_USER
 # Specify an alternate config file (Default: /etc/openerp-server.conf).
 CONFIGFILE="/etc/${OE_CONFIG}.conf"
@@ -252,7 +252,7 @@ if [ $INSTALL_NGINX = "True" ]; then
   listen 80;
   # set proper server name after domain set
   server_name $WEBSITE_NAME;
-  # Add Headers for ubunzu proxy mode
+  # Add Headers for holo proxy mode
   proxy_set_header X-Forwarded-Host \$host;
   proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
   proxy_set_header X-Forwarded-Proto \$scheme;
@@ -261,7 +261,7 @@ if [ $INSTALL_NGINX = "True" ]; then
   add_header X-XSS-Protection "1; mode=block";
   proxy_set_header X-Client-IP \$remote_addr;
   proxy_set_header HTTP_X_FORWARDED_HOST \$remote_addr;
-  #   ubunzu    log files
+  #   holo    log files
   access_log  /var/log/nginx/$OE_USER-access.log;
   error_log       /var/log/nginx/$OE_USER-error.log;
   #   increase    proxy   buffer  size
@@ -344,7 +344,7 @@ echo "Configuraton file location: /etc/${OE_CONFIG}.conf"
 echo "Logfile location: /var/log/$OE_USER"
 echo "User PostgreSQL: $OE_USER"
 echo "Code location: $OE_USER"
-echo "Addons folder: $OE_USER/$OE_CONFIG/ubunzu/addons/"
+echo "Addons folder: $OE_USER/$OE_CONFIG/holo/addons/"
 echo "Password superadmin (database): $OE_SUPERADMIN"
 echo "Start Eagle service: sudo service $OE_CONFIG start"
 echo "Stop Eagle service: sudo service $OE_CONFIG stop"

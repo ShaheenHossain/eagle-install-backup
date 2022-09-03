@@ -1,10 +1,10 @@
 
-OE_USER="eagle1568"
+OE_USER="eagle1569"
 OE_HOME="/$OE_USER"
 OE_HOME_EXT="/$OE_USER/${OE_USER}-server"
 INSTALL_WKHTMLTOPDF="True"
 
-OE_PORT="1568"
+OE_PORT="8069"
 # IMPORTANT! This script contains extra libraries that are specifically needed for Eagle 15.0
 OE_VERSION="master"
 
@@ -85,7 +85,7 @@ else
 fi
 
 echo -e "\n---- Create EAGLE system user ----"
-sudo adduser --system --quiet --shell=/bin/bash --home=$OE_HOME --gecos 'EAGLE1568' --group $OE_USER
+sudo adduser --system --quiet --shell=/bin/bash --home=$OE_HOME --gecos 'EAGLE1569' --group $OE_USER
 #The user should also be added to the sudo'ers group.
 sudo adduser $OE_USER sudo
 
@@ -97,7 +97,7 @@ sudo chown $OE_USER:$OE_USER /var/log/$OE_USER
 # Install EAGLE
 #--------------------------------------------------
 echo -e "\n==== Installing EAGLE Server ===="
-sudo git clone --depth 1 --branch $OE_VERSION https://github.com/ShaheenHossain/giga_source_15ent $OE_HOME_EXT/
+sudo git clone --depth 1 --branch $OE_VERSION https://github.com/ShaheenHossain/zubairsh_witsols_ent15 $OE_HOME_EXT/
 
 if [ $IS_ENTERPRISE = "True" ]; then
     # EAGLE Enterprise install!
@@ -153,14 +153,14 @@ sudo su root -c "printf 'logfile = /var/log/${OE_USER}/${OE_CONFIG}.log\n' >> /e
 if [ $IS_ENTERPRISE = "True" ]; then
     sudo su root -c "printf 'addons_path=${OE_HOME}/enterprise/addons,${OE_HOME_EXT}/addons\n' >> /etc/${OE_CONFIG}.conf"
 else
-    sudo su root -c "printf 'addons_path=${OE_HOME_EXT}/giga/addons,${OE_HOME}/custom/addons\n' >> /etc/${OE_CONFIG}.conf"
+    sudo su root -c "printf 'addons_path=${OE_HOME_EXT}/witsols/addons,${OE_HOME}/custom/addons\n' >> /etc/${OE_CONFIG}.conf"
 fi
 sudo chown $OE_USER:$OE_USER /etc/${OE_CONFIG}.conf
 sudo chmod 640 /etc/${OE_CONFIG}.conf
 
 echo -e "* Create startup file"
 sudo su root -c "echo '#!/bin/sh' >> $OE_HOME_EXT/start.sh"
-sudo su root -c "echo 'sudo -u $OE_USER $OE_HOME_EXT/giga-bin --config=/etc/${OE_CONFIG}.conf' >> $OE_HOME_EXT/start.sh"
+sudo su root -c "echo 'sudo -u $OE_USER $OE_HOME_EXT/witsols-bin --config=/etc/${OE_CONFIG}.conf' >> $OE_HOME_EXT/start.sh"
 sudo chmod 755 $OE_HOME_EXT/start.sh
 
 #--------------------------------------------------
@@ -182,7 +182,7 @@ cat <<EOF > ~/$OE_CONFIG
 # Description: Eagle Business Applications
 ### END INIT INFO
 PATH=/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/bin
-DAEMON=$OE_HOME_EXT/giga-bin
+DAEMON=$OE_HOME_EXT/witsols-bin
 NAME=$OE_CONFIG
 DESC=$OE_CONFIG
 # Specify the user name (Default: odoo).
@@ -345,7 +345,7 @@ echo "Configuraton file location: /etc/${OE_CONFIG}.conf"
 echo "Logfile location: /var/log/$OE_USER"
 echo "User PostgreSQL: $OE_USER"
 echo "Code location: $OE_USER"
-echo "Addons folder: $OE_USER/$OE_CONFIG/giga/addons/"
+echo "Addons folder: $OE_USER/$OE_CONFIG/witsols/addons/"
 echo "Password superadmin (database): $OE_SUPERADMIN"
 echo "Start Eagle service: sudo service $OE_CONFIG start"
 echo "Stop Eagle service: sudo service $OE_CONFIG stop"

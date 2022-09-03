@@ -10,7 +10,6 @@ This script can be safely used in a multi-odoo code base server because the defa
 
 sudo wget https://raw.githubusercontent.com/ShaheenHossain/eagle-install-backup/zubairsh_witsols_1569/eagle-ent1569-install.sh
 
-
 sudo chmod +x eagle-ent1569-install.sh
 
 

@@ -1,10 +1,10 @@
 
-OE_USER="eagle1568"
+OE_USER="eagle1567"
 OE_HOME="/$OE_USER"
 OE_HOME_EXT="/$OE_USER/${OE_USER}-server"
 INSTALL_WKHTMLTOPDF="True"
 
-OE_PORT="8068"
+OE_PORT="8067"
 # IMPORTANT! This script contains extra libraries that are specifically needed for Eagle 15.0
 OE_VERSION="master"
 
@@ -85,7 +85,7 @@ else
 fi
 
 echo -e "\n---- Create EAGLE system user ----"
-sudo adduser --system --quiet --shell=/bin/bash --home=$OE_HOME --gecos 'EAGLE1568' --group $OE_USER
+sudo adduser --system --quiet --shell=/bin/bash --home=$OE_HOME --gecos 'EAGLE1567' --group $OE_USER
 #The user should also be added to the sudo'ers group.
 sudo adduser $OE_USER sudo
 
@@ -97,7 +97,7 @@ sudo chown $OE_USER:$OE_USER /var/log/$OE_USER
 # Install EAGLE
 #--------------------------------------------------
 echo -e "\n==== Installing EAGLE Server ===="
-sudo git clone --depth 1 --branch $OE_VERSION https://github.com/ShaheenHossain/odoo_15_ent_unlimit $OE_HOME_EXT/
+sudo git clone --depth 1 --branch $OE_VERSION https://github.com/ShaheenHossain/zubairsh_witsols_15ent $OE_HOME_EXT/
 
 if [ $IS_ENTERPRISE = "True" ]; then
     # EAGLE Enterprise install!

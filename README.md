@@ -9,7 +9,6 @@ This script can be safely used in a multi-odoo code base server because the defa
 
 
 sudo wget https://raw.githubusercontent.com/ShaheenHossain/eagle-install-backup/odoo_1350ent/eagle-1350-install.sh
-
 2. Make the script executable:
 sudo chmod +x eagle-1350-install.sh
 

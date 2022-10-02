@@ -22,8 +22,8 @@ ENABLE_SSL="False"
 # Provide Email to register ssl certificate
 ADMIN_EMAIL="rapidgrps@gmail.com"
 
-WKHTMLTOX_X64=https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.trusty_amd64.deb
-WKHTMLTOX_X32=https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.trusty_i386.deb
+WKHTMLTOX_X64=https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.6-1.focal_amd64.deb
+WKHTMLTOX_X32=https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.6-1.focal_i386.deb
 
 #if not working then install wkhtmaltopdf for ubuntu 20.04
 #wget https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6-1/wkhtmltox_0.12.6-1.focal_amd64.deb
@@ -54,8 +54,10 @@ sudo su - postgres -c "createuser -s $OE_USER" 2> /dev/null || true
 #--------------------------------------------------
 echo -e "\n--- Installing Python 3 + pip3 --"
 sudo apt-get install git python3 python3-pip build-essential wget python3-dev python3-venv python3-wheel libxslt-dev libzip-dev libldap2-dev libsasl2-dev python3-setuptools node-less libpng12-0 libjpeg-dev gdebi -y
-
 sudo pip3 install psycopg2-binary pdfminer.six -y
+#--------------------------------------------------
+sudo pip3 install html2text -y
+#--------------------------------------------------
 
 echo -e "\n---- Install python packages/requirements ----"
 sudo -H pip3 install -r https://raw.githubusercontent.com/odoo/odoo/15.0/requirements.txt

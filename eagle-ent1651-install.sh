@@ -1,36 +1,31 @@
 
-OE_USER="eagle1650"
+OE_USER="eagle1651"
 OE_HOME="/$OE_USER"
 OE_HOME_EXT="/$OE_USER/${OE_USER}-server"
 INSTALL_WKHTMLTOPDF="True"
-
-OE_PORT="1650"
-# IMPORTANT! This script contains extra libraries that are specifically needed for Eagle 15.0
+OE_PORT="8051"
 OE_VERSION="16.0"
-
 IS_ENTERPRISE="False"
-
-INSTALL_NGINX="Flase"
-
+INSTALL_NGINX="False"
 OE_SUPERADMIN="admin"
-# Set to "True" to generate a random password, "False" to use the variable in OE_SUPERADMIN
 GENERATE_RANDOM_PASSWORD="False"
 OE_CONFIG="${OE_USER}-server"
 # Set the website name
 WEBSITE_NAME="_"
 LONGPOLLING_PORT="8072"
-ENABLE_SSL="False"
+# Set to "True" to install certbot and have ssl enabled, "False" to use http
+ENABLE_SSL="True"
 # Provide Email to register ssl certificate
-ADMIN_EMAIL="rapidgrps@gmail.com"
-
+ADMIN_EMAIL="odoo@example.com"
+##
+###  WKHTMLTOPDF download links
+## === Ubuntu Trusty x64 & x32 === (for other distributions please replace these two links,
+## in order to have correct version of wkhtmltopdf installed, for a danger note refer to
+## https://github.com/odoo/odoo/wiki/Wkhtmltopdf ):
+## https://www.odoo.com/documentation/13.0/setup/install.html#debian-ubuntu
 
 WKHTMLTOX_X64="https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.$(lsb_release -c -s)_amd64.deb"
 WKHTMLTOX_X32="https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.$(lsb_release -c -s)_i386.deb"
-
-#if not working then install wkhtmaltopdf for ubuntu 20.04
-#wget https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6-1/wkhtmltox_0.12.6-1.focal_amd64.deb
-#sudo apt install ./wkhtmltox_0.12.6-1.focal_amd64.deb
-
 #--------------------------------------------------
 # Update Server
 #--------------------------------------------------
@@ -48,22 +43,16 @@ sudo apt-get upgrade -y
 echo -e "\n---- Install PostgreSQL Server ----"
 sudo apt-get install postgresql postgresql-server-dev-all -y
 
-echo -e "\n---- Creating the Eagle PostgreSQL User  ----"
+echo -e "\n---- Creating the ODOO PostgreSQL User  ----"
 sudo su - postgres -c "createuser -s $OE_USER" 2> /dev/null || true
 
 #--------------------------------------------------
 # Install Dependencies
 #--------------------------------------------------
 echo -e "\n--- Installing Python 3 + pip3 --"
-sudo apt-get install git python3 python3-pip build-essential wget python3-dev python3-venv python3-wheel libxslt-dev libzip-dev libldap2-dev libsasl2-dev python3-setuptools node-less libpng12-0 libjpeg-dev gdebi -y
-
-#python3-cffi for Ubuntu 22.04 
-
-sudo pip3 install psycopg2-binary pdfminer.six -y
+sudo apt-get install git python3 python3-pip python3-cffi build-essential wget python3-dev python3-venv python3-wheel libxslt-dev libzip-dev libldap2-dev libsasl2-dev python3-setuptools node-less libpng12-0 libjpeg-dev gdebi -y
 
 echo -e "\n---- Install python packages/requirements ----"
-#sudo -H pip3 install -r https://raw.githubusercontent.com/odoo/odoo/16.0/requirements.txt
-
 sudo -H pip3 install -r https://github.com/odoo/odoo/raw/${OE_VERSION}/requirements.txt
 
 echo -e "\n---- Installing nodeJS NPM and rtlcss for LTR support ----"
@@ -74,7 +63,7 @@ sudo npm install -g rtlcss
 # Install Wkhtmltopdf if needed
 #--------------------------------------------------
 if [ $INSTALL_WKHTMLTOPDF = "True" ]; then
-  echo -e "\n---- Install wkhtml and place shortcuts on correct place for Eagle 15 ----"
+  echo -e "\n---- Install wkhtml and place shortcuts on correct place for ODOO 13 ----"
   #pick up correct one from x64 & x32 versions:
   if [ "`getconf LONG_BIT`" == "64" ];then
       _url=$WKHTMLTOX_X64
@@ -89,8 +78,8 @@ else
   echo "Wkhtmltopdf isn't installed due to the choice of the user!"
 fi
 
-echo -e "\n---- Create EAGLE system user ----"
-sudo adduser --system --quiet --shell=/bin/bash --home=$OE_HOME --gecos 'EAGLE1650' --group $OE_USER
+echo -e "\n---- Create ODOO system user ----"
+sudo adduser --system --quiet --shell=/bin/bash --home=$OE_HOME --gecos 'ODOO' --group $OE_USER
 #The user should also be added to the sudo'ers group.
 sudo adduser $OE_USER sudo
 
@@ -99,9 +88,9 @@ sudo mkdir /var/log/$OE_USER
 sudo chown $OE_USER:$OE_USER /var/log/$OE_USER
 
 #--------------------------------------------------
-# Install EAGLE
+# Install ODOO
 #--------------------------------------------------
-echo -e "\n==== Installing EAGLE Server ===="
+echo -e "\n==== Installing ODOO Server ===="
 sudo git clone --depth 1 --branch $OE_VERSION https://www.github.com/odoo/odoo $OE_HOME_EXT/
 
 if [ $IS_ENTERPRISE = "True" ]; then
@@ -165,11 +154,11 @@ sudo chmod 640 /etc/${OE_CONFIG}.conf
 
 echo -e "* Create startup file"
 sudo su root -c "echo '#!/bin/sh' >> $OE_HOME_EXT/start.sh"
-sudo su root -c "echo 'sudo -u $OE_USER $OE_HOME_EXT/unozio-bin --config=/etc/${OE_CONFIG}.conf' >> $OE_HOME_EXT/start.sh"
+sudo su root -c "echo 'sudo -u $OE_USER $OE_HOME_EXT/odoo-bin --config=/etc/${OE_CONFIG}.conf' >> $OE_HOME_EXT/start.sh"
 sudo chmod 755 $OE_HOME_EXT/start.sh
 
 #--------------------------------------------------
-# Adding Eagle as a deamon (initscript)
+# Adding ODOO as a deamon (initscript)
 #--------------------------------------------------
 
 echo -e "* Create init file"
@@ -239,7 +228,6 @@ esac
 exit 0
 EOF
 
-
 echo -e "* Security Init File"
 sudo mv ~/$OE_CONFIG /etc/init.d/$OE_CONFIG
 sudo chmod 755 /etc/init.d/$OE_CONFIG
@@ -257,8 +245,10 @@ if [ $INSTALL_NGINX = "True" ]; then
   cat <<EOF > ~/odoo
 server {
   listen 80;
+
   # set proper server name after domain set
   server_name $WEBSITE_NAME;
+
   # Add Headers for odoo proxy mode
   proxy_set_header X-Forwarded-Host \$host;
   proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
@@ -268,22 +258,28 @@ server {
   add_header X-XSS-Protection "1; mode=block";
   proxy_set_header X-Client-IP \$remote_addr;
   proxy_set_header HTTP_X_FORWARDED_HOST \$remote_addr;
+
   #   odoo    log files
   access_log  /var/log/nginx/$OE_USER-access.log;
   error_log       /var/log/nginx/$OE_USER-error.log;
+
   #   increase    proxy   buffer  size
   proxy_buffers   16  64k;
   proxy_buffer_size   128k;
+
   proxy_read_timeout 900s;
   proxy_connect_timeout 900s;
   proxy_send_timeout 900s;
+
   #   force   timeouts    if  the backend dies
   proxy_next_upstream error   timeout invalid_header  http_500    http_502
   http_503;
+
   types {
     text/less less;
     text/scss scss;
   }
+
   #   enable  data    compression
   gzip    on;
   gzip_min_length 1100;
@@ -293,19 +289,23 @@ server {
   client_header_buffer_size 4k;
   large_client_header_buffers 4 64k;
   client_max_body_size 0;
+
   location / {
     proxy_pass    http://127.0.0.1:$OE_PORT;
     # by default, do not forward anything
     proxy_redirect off;
   }
+
   location /longpolling {
     proxy_pass http://127.0.0.1:$LONGPOLLING_PORT;
   }
+
   location ~* .(js|css|png|jpg|jpeg|gif|ico)$ {
     expires 2d;
     proxy_pass http://127.0.0.1:$OE_PORT;
     add_header Cache-Control "public, no-transform";
   }
+
   # cache some static data in memory for 60mins.
   location ~ /[a-zA-Z0-9_-]*/static/ {
     proxy_cache_valid 200 302 60m;
@@ -331,7 +331,7 @@ fi
 # Enable ssl with certbot
 #--------------------------------------------------
 
-if [ $INSTALL_NGINX = "True" ] && [ $ENABLE_SSL = "True" ] && [ $ADMIN_EMAIL != "eagle@example.com" ]  && [ $WEBSITE_NAME != "_" ];then
+if [ $INSTALL_NGINX = "True" ] && [ $ENABLE_SSL = "True" ] && [ $ADMIN_EMAIL != "odoo@example.com" ]  && [ $WEBSITE_NAME != "_" ];then
   sudo add-apt-repository ppa:certbot/certbot -y && sudo apt-get update -y
   sudo apt-get install python3-certbot-nginx -y
   sudo certbot --nginx -d $WEBSITE_NAME --noninteractive --agree-tos --email $ADMIN_EMAIL --redirect

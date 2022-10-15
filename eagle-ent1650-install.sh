@@ -8,7 +8,7 @@ OE_PORT="1650"
 # IMPORTANT! This script contains extra libraries that are specifically needed for Eagle 15.0
 OE_VERSION="master"
 
-IS_ENTERPRISE="False"
+IS_ENTERPRISE="True"
 
 INSTALL_NGINX="Flase"
 

@@ -1,9 +1,9 @@
 
-OE_USER="eagle1651"
+OE_USER="eagle1652"
 OE_HOME="/$OE_USER"
 OE_HOME_EXT="/$OE_USER/${OE_USER}-server"
 INSTALL_WKHTMLTOPDF="True"
-OE_PORT="8051"
+OE_PORT="8052"
 OE_VERSION="master"
 IS_ENTERPRISE="False"
 INSTALL_NGINX="False"
@@ -79,7 +79,7 @@ else
 fi
 
 echo -e "\n---- Create ODOO system user ----"
-sudo adduser --system --quiet --shell=/bin/bash --home=$OE_HOME --gecos 'EAGLE1651' --group $OE_USER
+sudo adduser --system --quiet --shell=/bin/bash --home=$OE_HOME --gecos 'EAGLE1652' --group $OE_USER
 #The user should also be added to the sudo'ers group.
 sudo adduser $OE_USER sudo
 

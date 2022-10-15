@@ -1,10 +1,10 @@
 
-OE_USER="eagle1568"
+OE_USER="eagle1650"
 OE_HOME="/$OE_USER"
 OE_HOME_EXT="/$OE_USER/${OE_USER}-server"
 INSTALL_WKHTMLTOPDF="True"
 
-OE_PORT="1568"
+OE_PORT="1650"
 # IMPORTANT! This script contains extra libraries that are specifically needed for Eagle 15.0
 OE_VERSION="master"
 
@@ -23,8 +23,9 @@ ENABLE_SSL="False"
 # Provide Email to register ssl certificate
 ADMIN_EMAIL="rapidgrps@gmail.com"
 
-WKHTMLTOX_X64=https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.trusty_amd64.deb
-WKHTMLTOX_X32=https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.trusty_i386.deb
+
+WKHTMLTOX_X64="https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.$(lsb_release -c -s)_amd64.deb"
+WKHTMLTOX_X32="https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.$(lsb_release -c -s)_i386.deb"
 
 #if not working then install wkhtmaltopdf for ubuntu 20.04
 #wget https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6-1/wkhtmltox_0.12.6-1.focal_amd64.deb
@@ -56,10 +57,14 @@ sudo su - postgres -c "createuser -s $OE_USER" 2> /dev/null || true
 echo -e "\n--- Installing Python 3 + pip3 --"
 sudo apt-get install git python3 python3-pip build-essential wget python3-dev python3-venv python3-wheel libxslt-dev libzip-dev libldap2-dev libsasl2-dev python3-setuptools node-less libpng12-0 libjpeg-dev gdebi -y
 
+#python3-cffi for Ubuntu 22.04 
+
 sudo pip3 install psycopg2-binary pdfminer.six -y
 
 echo -e "\n---- Install python packages/requirements ----"
-sudo -H pip3 install -r https://raw.githubusercontent.com/odoo/odoo/15.0/requirements.txt
+#sudo -H pip3 install -r https://raw.githubusercontent.com/odoo/odoo/16.0/requirements.txt
+
+sudo -H pip3 install -r https://github.com/odoo/odoo/raw/${OE_VERSION}/requirements.txt
 
 echo -e "\n---- Installing nodeJS NPM and rtlcss for LTR support ----"
 sudo apt-get install nodejs npm -y
@@ -85,7 +90,7 @@ else
 fi
 
 echo -e "\n---- Create EAGLE system user ----"
-sudo adduser --system --quiet --shell=/bin/bash --home=$OE_HOME --gecos 'EAGLE1568' --group $OE_USER
+sudo adduser --system --quiet --shell=/bin/bash --home=$OE_HOME --gecos 'EAGLE1650' --group $OE_USER
 #The user should also be added to the sudo'ers group.
 sudo adduser $OE_USER sudo
 

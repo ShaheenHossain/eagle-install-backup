@@ -1,22 +1,31 @@
-
-OE_USER="eagle1653"
+OE_USER="eagle1654"
 OE_HOME="/$OE_USER"
 OE_HOME_EXT="/$OE_USER/${OE_USER}-server"
+# The default port where this Odoo instance will run under (provided you use the command -c in the terminal)
+# Set to true if you want to install it, false if you don't need it or have it already installed.
 INSTALL_WKHTMLTOPDF="True"
-OE_PORT="8053"
+# Set the default Odoo port (you still have to use -c /etc/odoo-server.conf for example to use this.)
+OE_PORT="8054"
+# Choose the Odoo version which you want to install. For example: 16.0, 15.0, 14.0 or saas-22. When using 'master' the master version will be installed.
+# IMPORTANT! This script contains extra libraries that are specifically needed for Odoo 16.0
 OE_VERSION="master"
+# Set this to True if you want to install the Odoo enterprise version!
 IS_ENTERPRISE="False"
+# Set this to True if you want to install Nginx!
 INSTALL_NGINX="False"
+# Set the superadmin password - if GENERATE_RANDOM_PASSWORD is set to "True" we will automatically generate a random password, otherwise we use this one
 OE_SUPERADMIN="admin"
+# Set to "True" to generate a random password, "False" to use the variable in OE_SUPERADMIN
 GENERATE_RANDOM_PASSWORD="False"
 OE_CONFIG="${OE_USER}-server"
 # Set the website name
 WEBSITE_NAME="_"
+# Set the default Odoo longpolling port (you still have to use -c /etc/odoo-server.conf for example to use this.)
 LONGPOLLING_PORT="8072"
 # Set to "True" to install certbot and have ssl enabled, "False" to use http
 ENABLE_SSL="True"
 # Provide Email to register ssl certificate
-ADMIN_EMAIL="odoo@example.com"
+ADMIN_EMAIL="rapidgrps@gmail.com"
 ##
 ###  WKHTMLTOPDF download links
 ## === Ubuntu Trusty x64 & x32 === (for other distributions please replace these two links,
@@ -32,7 +41,9 @@ WKHTMLTOX_X32="https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12
 echo -e "\n---- Update Server ----"
 # universe package is for Ubuntu 18.x
 sudo add-apt-repository universe
+
 # libpng12-0 dependency for wkhtmltopdf
+
 sudo add-apt-repository "deb http://mirrors.kernel.org/ubuntu/ xenial main"
 sudo apt-get update
 sudo apt-get upgrade -y
@@ -50,10 +61,10 @@ sudo su - postgres -c "createuser -s $OE_USER" 2> /dev/null || true
 # Install Dependencies
 #--------------------------------------------------
 echo -e "\n--- Installing Python 3 + pip3 --"
-sudo apt-get install git python3 python3-pip python3-cffi build-essential wget python3-dev python3-venv python3-wheel libxslt-dev libzip-dev libldap2-dev libsasl2-dev python3-setuptools node-less libpng12-0 libjpeg-dev gdebi -y
+sudo apt-get install git python3 python3-pip python3-cffi build-essential wget python3-dev python3-venv python3-wheel libxslt-dev libzip-dev libldap2-dev libsasl2-dev python3-setuptools node-less libjpeg-dev gdebi -y
 
 echo -e "\n---- Install python packages/requirements ----"
-sudo -H pip3 install -r https://github.com/odoo/odoo/raw/${OE_VERSION}/requirements.txt
+sudo -H pip3 install -r https://github.com/odoo/odoo/raw/16.0/requirements.txt
 
 echo -e "\n---- Installing nodeJS NPM and rtlcss for LTR support ----"
 sudo apt-get install nodejs npm -y
@@ -63,7 +74,7 @@ sudo npm install -g rtlcss
 # Install Wkhtmltopdf if needed
 #--------------------------------------------------
 if [ $INSTALL_WKHTMLTOPDF = "True" ]; then
-  echo -e "\n---- Install wkhtml and place shortcuts on correct place for ODOO 16 ----"
+  echo -e "\n---- Install wkhtml and place shortcuts on correct place for ODOO 13 ----"
   #pick up correct one from x64 & x32 versions:
   if [ "`getconf LONG_BIT`" == "64" ];then
       _url=$WKHTMLTOX_X64
@@ -79,7 +90,7 @@ else
 fi
 
 echo -e "\n---- Create ODOO system user ----"
-sudo adduser --system --quiet --shell=/bin/bash --home=$OE_HOME --gecos 'EAGLE1653' --group $OE_USER
+sudo adduser --system --quiet --shell=/bin/bash --home=$OE_HOME --gecos 'EAGLE1654' --group $OE_USER
 #The user should also be added to the sudo'ers group.
 sudo adduser $OE_USER sudo
 

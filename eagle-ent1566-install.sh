@@ -14,6 +14,7 @@ LONGPOLLING_PORT="8072"
 ADMIN_EMAIL="rapidgrps@gmail.com"
 
 
+
 #--------------------------------------------------
 # Update Server
 #--------------------------------------------------
@@ -43,6 +44,9 @@ sudo adduser $OE_USER sudo
 echo -e "\n---- Create Log directory ----"
 sudo mkdir /var/log/$OE_USER
 sudo chown $OE_USER:$OE_USER /var/log/$OE_USER
+
+sudo ufw allow $OE_PORT
+
 
 #--------------------------------------------------
 # Install EAGLE
